@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --green-900: #012d1d;
+  --green-800: #1B4332;
+  --green-700: #2d6a4f;
+  --green-100: #c1ecd4;
+  --green-50:  #f0fdf4;
+  --gold:      #D4A017;
+  --gold-light:#ffc641;
+  --surface:   #f9f9ff;
+  --white:     #ffffff;
+  --text-dark: #151c27;
+  --text-muted:#6b7280;
+  --border:    #e5e7eb;
+  --shadow-card: 0 4px 20px rgba(27, 67, 50, 0.08);
+  --shadow-lg:   0 12px 32px rgba(27, 67, 50, 0.14);
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+}
+
+@theme inline {
+  --color-primary:       var(--green-800);
+  --color-primary-dark:  var(--green-900);
+  --color-primary-light: var(--green-100);
+  --color-accent:        var(--gold);
+  --color-surface:       var(--surface);
+  --color-background:    var(--white);
+  --color-text:          var(--text-dark);
+  --color-muted:         var(--text-muted);
+  --color-border:        var(--border);
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+}
+
+body {
+  background: var(--white);
+  color: var(--text-dark);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* === REUSABLE UTILITIES === */
+.container-app {
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--green-800);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--green-700);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(27, 67, 50, 0.25);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--gold);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  text-decoration: none;
+}
+.btn-accent:hover {
+  background: #b8860f;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: var(--green-800);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--green-800);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-outline:hover {
+  background: var(--green-800);
+  color: var(--white);
+}
+
+/* === TOP APP BAR === */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--green-800);
+  color: var(--white);
+  padding: 0.875rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.topbar-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* === SECTION TITLE === */
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.875rem;
+}
+
+/* === GOLD ACCENT BANNER (Pengumuman) === */
+.announcement-card {
+  border-left: 4px solid var(--gold);
+  background: var(--white);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: 1rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+.announcement-card:hover { box-shadow: var(--shadow-lg); }
+
+/* === PENGURUS CARD === */
+.pengurus-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  padding: 1.25rem 0.75rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pengurus-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.pengurus-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.625rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--green-800);
+  overflow: hidden;
+}
+.pengurus-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* === WHATSAPP FAB === */
+.whatsapp-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.25rem;
+  z-index: 100;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.whatsapp-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.5);
+}
+
+/* === CHIP/BADGE === */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+.chip-green { background: var(--green-50); color: var(--green-800); }
+.chip-gold  { background: #fef3c7; color: #92400e; }
+.chip-red   { background: #fee2e2; color: #991b1b; }
+.chip-blue  { background: #dbeafe; color: #1e40af; }
+
+/* === KEGIATAN CARD === */
+.kegiatan-card {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.kegiatan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.kegiatan-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green-800);
+  font-size: 3rem;
+}
+
+/* === USAHA CARD === */
+.usaha-card {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.usaha-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+.usaha-hero {
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25rem;
+  position: relative;
+  background: var(--green-800);
+}
+.usaha-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 60%);
+}
+
+/* === FADE IN ANIMATION === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 0.45s ease forwards;
+}
+.fade-up-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-up-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-up-delay-3 { animation-delay: 0.3s; opacity: 0; }
