@@ -23,6 +23,7 @@ export default function FormPengumuman({ initialData }: { initialData?: any }) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     
     if (initialData) {
       const result = await Swal.fire({
@@ -41,7 +42,6 @@ export default function FormPengumuman({ initialData }: { initialData?: any }) {
 
     setLoading(true);
 
-    const form = e.currentTarget;
     try {
       const formData = new FormData(form);
       if (initialData) {

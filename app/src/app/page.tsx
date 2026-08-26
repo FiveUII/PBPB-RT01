@@ -1,5 +1,5 @@
 import Link from "next/link";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
+
 import Footer from "@/components/Footer";
 import { getPengumuman } from "@/lib/actions";
 import { Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
@@ -136,7 +136,7 @@ export default async function HomePage() {
       </div>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }

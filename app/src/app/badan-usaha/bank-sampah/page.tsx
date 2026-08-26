@@ -1,8 +1,10 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
+
 import { getPengurus, getBadanUsaha } from "@/lib/actions";
 import Link from "next/link";
+import { MapPin } from "lucide-react";
+import ImageModal from "@/components/ImageModal";
 
 export const metadata = {
   title: "Bank Sampah | RT 01 Perumahan Harmoni",
@@ -24,33 +26,45 @@ export default async function BankSampahPage() {
       .toUpperCase();
   };
 
+  const allImages = [infoUsaha?.foto_url, ...(infoUsaha?.galeri_urls || [])].filter(Boolean) as string[];
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "var(--surface)" }}>
-      <Topbar title="Bank Sampah" showBack />
+      <Topbar title="Bank Sampah" showBack backHref="/badan-usaha" />
 
       <main className="flex-1">
-        {/* Hero */}
-        <div
-          className="flex items-end px-5 pb-6 pt-16 relative overflow-hidden"
-          style={{
-            minHeight: infoUsaha?.foto_url ? 250 : 200,
-            background: infoUsaha?.foto_url ? "none" : "linear-gradient(160deg, #92400e, var(--gold))",
-          }}
-        >
-          {infoUsaha?.foto_url && (
-            <div className="absolute inset-0 z-0">
-               <img src={infoUsaha.foto_url} alt="Cover Bank Sampah" className="w-full h-full object-cover" />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        {/* Banner/Hero */}
+        {infoUsaha?.foto_url ? (
+          <ImageModal images={allImages} initialIndex={0}>
+            <section 
+              className="relative overflow-hidden bg-cover bg-center min-h-[300px] md:min-h-[400px] flex items-end p-6 md:p-10 group"
+              style={{ background: `url(${infoUsaha.foto_url}) center 80%/cover no-repeat` }}
+            >
+              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.2))" }}></div>
+              <div className="relative z-10 w-full fade-up">
+                <div>
+                  <h1 className="text-2xl font-bold text-white mb-1" style={{ textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>{infoUsaha?.nama_usaha || "Bank Sampah Guyub Rukun"}</h1>
+                  <p className="text-amber-100 text-sm opacity-90" style={{ textShadow: "0 1px 2px rgba(0,0,0,0.5)" }}>Unit Usaha Warga RT 01</p>
+                </div>
+              </div>
+            </section>
+          </ImageModal>
+        ) : (
+          <section 
+            className="relative overflow-hidden bg-cover bg-center min-h-[300px] md:min-h-[400px] flex items-end p-6 md:p-10"
+            style={{ background: "var(--gold)" }}
+          >
+            <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.1)" }}></div>
+            <div className="relative z-10 w-full fade-up">
+              <div>
+                <h1 className="text-2xl font-bold text-white mb-1">{infoUsaha?.nama_usaha || "Bank Sampah Guyub Rukun"}</h1>
+                <p className="text-amber-100 text-sm opacity-90">Unit Usaha Warga RT 01</p>
+              </div>
             </div>
-          )}
-          <div className="relative z-10">
-            <span className="text-5xl block mb-2">♻️</span>
-            <h1 className="text-2xl font-extrabold text-white">Bank Sampah Guyub Rukun</h1>
-            <p className="text-white/80 text-sm mt-1 font-medium">Unit Usaha RT 01 Perumahan Harmoni</p>
-          </div>
-        </div>
+          </section>
+        )}
 
-        <div className="container-app py-6 flex flex-col gap-5">
+        <div className="container-app py-6 flex flex-col gap-5 max-w-3xl mx-auto w-full">
           {/* Status chips */}
           <div className="flex gap-2 flex-wrap fade-up">
             <span className="chip chip-green">✅ Aktif</span>
@@ -70,9 +84,16 @@ export default async function BankSampahPage() {
             <section className="fade-up fade-up-delay-1">
                <h2 className="section-title mb-3 px-1">Galeri Foto</h2>
                <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
-                 {infoUsaha.galeri_urls.map((url: string, idx: number) => (
-                   <img key={idx} src={url} alt={`Galeri ${idx}`} className="w-36 h-36 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100" />
-                 ))}
+                 {infoUsaha.galeri_urls.map((url: string, idx: number) => {
+                   const globalIdx = infoUsaha?.foto_url ? idx + 1 : idx;
+                   return (
+                     <div key={idx} className="w-36 h-36 flex-shrink-0 snap-center">
+                       <ImageModal images={allImages} initialIndex={globalIdx}>
+                         <img src={url} alt={`Galeri ${idx}`} className="w-full h-full rounded-lg object-cover shadow-sm border border-gray-100 hover:opacity-90 transition-opacity" />
+                       </ImageModal>
+                     </div>
+                   );
+                 })}
                </div>
             </section>
           )}
@@ -124,6 +145,30 @@ export default async function BankSampahPage() {
             </div>
           </section>
 
+          {/* Lokasi */}
+          <section className="card fade-up fade-up-delay-4">
+            <div
+              className="flex items-center justify-center"
+              style={{ height: 140, background: "var(--green-50)" }}
+            >
+              <MapPin size={48} style={{ color: "var(--green-800)" }} />
+            </div>
+            <div className="p-5">
+              <h2 className="section-title mb-1">Lokasi Bank Sampah</h2>
+              <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>
+                Poskamling RT, Blok A
+              </p>
+              <a
+                href="https://maps.app.goo.gl/4Ur18HBwmdFYMzzo7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline w-full text-center flex justify-center items-center gap-2"
+              >
+                <MapPin size={18} /> Buka di Google Maps
+              </a>
+            </div>
+          </section>
+
           <Link href="/badan-usaha" className="btn-outline w-full text-center mt-2 fade-up">
             ← Kembali ke Badan Usaha
           </Link>
@@ -131,7 +176,7 @@ export default async function BankSampahPage() {
       </main>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }

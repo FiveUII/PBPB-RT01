@@ -20,14 +20,14 @@ export default async function AdminKegiatanPage(props: { searchParams: Promise<{
 
       <main className="container-app py-6 flex-1 flex flex-col gap-6">
         
-        <section className="card p-5">
+        <section className="card p-5 max-w-2xl mx-auto w-full">
           <h2 className="section-title mb-4">{editItem ? "Edit Kegiatan" : "Tambah Kegiatan"}</h2>
           <FormKegiatan initialData={editItem} />
         </section>
 
         <section>
           <h2 className="section-title">Daftar Kegiatan</h2>
-          <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {kegiatanList.length === 0 ? (
               <p className="text-sm italic" style={{ color: "var(--text-muted)" }}>Belum ada data kegiatan.</p>
             ) : (

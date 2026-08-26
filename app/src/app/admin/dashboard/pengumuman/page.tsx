@@ -21,7 +21,7 @@ export default async function AdminPengumumanPage(props: { searchParams: Promise
       <main className="container-app py-6 flex-1 flex flex-col gap-6">
         
         {/* Form */}
-        <section className="card p-5">
+        <section className="card p-5 max-w-2xl mx-auto w-full">
           <h2 className="section-title mb-4">{editItem ? "Edit Pengumuman" : "Buat Pengumuman Baru"}</h2>
           <FormPengumuman initialData={editItem} />
         </section>
@@ -29,7 +29,7 @@ export default async function AdminPengumumanPage(props: { searchParams: Promise
         {/* List */}
         <section>
           <h2 className="section-title">Daftar Pengumuman</h2>
-          <div className="flex flex-col gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {pengumumanList.length === 0 ? (
               <p className="text-sm italic" style={{ color: "var(--text-muted)" }}>Belum ada pengumuman.</p>
             ) : (

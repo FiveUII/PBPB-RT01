@@ -1,12 +1,14 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
-import Link from "next/link";
 
-const units = [
+import Link from "next/link";
+import { getBadanUsaha } from "@/lib/actions";
+
+const staticUnits = [
   {
     href: "/badan-usaha/bioflok",
     icon: "🐟",
+    keyword: "bioflok",
     nama: "Ternak Ikan Bioflok",
     deskripsi:
       "Budidaya ikan lele dan nila menggunakan teknologi bioflok hemat air dan lahan.",
@@ -17,6 +19,7 @@ const units = [
   {
     href: "/badan-usaha/bank-sampah",
     icon: "♻️",
+    keyword: "sampah",
     nama: "Bank Sampah Guyub Rukun",
     deskripsi:
       "Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Minggu pagi.",
@@ -31,7 +34,19 @@ export const metadata = {
   description: "Unit usaha produktif yang dikelola oleh warga RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
-export default function BadanUsahaPage() {
+export default async function BadanUsahaPage() {
+  const usahaList = await getBadanUsaha();
+
+  const units = staticUnits.map(unit => {
+    const dbData = usahaList.find(u => u.nama_usaha.toLowerCase().includes(unit.keyword));
+    return {
+      ...unit,
+      nama: dbData?.nama_usaha || unit.nama,
+      deskripsi: dbData?.deskripsi || unit.deskripsi,
+      foto_url: dbData?.foto_url || null,
+    };
+  });
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "var(--surface)" }}>
       <Topbar title="Badan Usaha RT" showBack />
@@ -51,19 +66,25 @@ export default function BadanUsahaPage() {
         </section>
 
         {/* Unit Cards */}
-        <div className="flex flex-col gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {units.map((unit, i) => (
             <div
               key={unit.href}
-              className="usaha-card bg-white fade-up"
+              className="usaha-card bg-white fade-up overflow-hidden"
               style={{ animationDelay: `${0.15 * (i + 1)}s`, opacity: 0 }}
             >
               {/* Hero */}
-              <div className="usaha-hero" style={{ background: unit.accent }}>
-                <div className="usaha-hero-overlay" />
+              <div 
+                className="usaha-hero relative flex items-end p-5 h-32" 
+                style={unit.foto_url ? { background: `url(${unit.foto_url}) center 80%/cover no-repeat` } : { background: unit.accent }}
+              >
+                <div 
+                  className="absolute inset-0" 
+                  style={unit.foto_url ? { background: "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.2))" } : { background: "linear-gradient(to top, rgba(0,0,0,0.4), transparent)" }} 
+                />
                 <div className="relative z-10 flex items-end gap-3 w-full">
-                  <span className="text-5xl">{unit.icon}</span>
-                  <h3 className="font-bold text-white text-lg leading-tight">{unit.nama}</h3>
+                  {!unit.foto_url && <span className="text-5xl">{unit.icon}</span>}
+                  <h3 className="font-bold text-white text-lg leading-tight" style={unit.foto_url ? { textShadow: "0 2px 4px rgba(0,0,0,0.5)" } : undefined}>{unit.nama}</h3>
                 </div>
               </div>
 
@@ -87,7 +108,7 @@ export default function BadanUsahaPage() {
       </main>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }

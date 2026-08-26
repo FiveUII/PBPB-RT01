@@ -40,6 +40,7 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     
     const result = await Swal.fire({
       title: "Simpan Perubahan?",
@@ -55,7 +56,7 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
     if (!result.isConfirmed) return;
 
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     formData.append("id", usaha.id);
 
     try {
@@ -85,7 +86,7 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <div>
         <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Nama Usaha</label>
-        <input type="text" value={usaha.nama_usaha} disabled className="w-full rounded-lg px-3 py-2 text-sm border bg-gray-50 text-gray-500 cursor-not-allowed outline-none" />
+        <input type="text" name="nama_usaha" defaultValue={usaha.nama_usaha} required className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
       </div>
 
       <div>

@@ -219,6 +219,7 @@ export async function updateBadanUsaha(formData: FormData, fotoUrl: string | nul
   const id = formData.get("id") as string;
   
   const updateData: any = {
+    nama_usaha: formData.get("nama_usaha"),
     deskripsi: formData.get("deskripsi"),
     jadwal_operasional: formData.get("jadwal_operasional"),
     kontak_whatsapp: formData.get("kontak_whatsapp"),

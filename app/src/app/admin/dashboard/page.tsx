@@ -38,8 +38,10 @@ export default async function DashboardPage() {
 
       {/* Header */}
       <header className="topbar relative z-20 bg-transparent shadow-none px-5 py-4">
-        <span className="topbar-title">Dashboard Admin</span>
-        <LogoutButton />
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
+          <span className="topbar-title">Dashboard Admin</span>
+          <LogoutButton />
+        </div>
       </header>
 
       <main className="container-app py-6 flex flex-col gap-5 flex-1">
@@ -58,7 +60,7 @@ export default async function DashboardPage() {
         {/* Quick Actions */}
         <section className="fade-up fade-up-delay-1">
           <h2 className="section-title">Kelola Konten</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {menuItems.map((item) => (
               <Link
                 key={item.href}

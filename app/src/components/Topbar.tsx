@@ -24,37 +24,39 @@ export default function Topbar({
   return (
     <>
       <header className="topbar">
-        {showBack ? (
-          <Link href={backHref} aria-label="Kembali" className="text-white p-1">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 5l-7 7 7 7" />
-            </svg>
-          </Link>
-        ) : (
-          <span className="flex items-center gap-2 text-white font-bold text-base">
-            <Home size={20} /> RT 01
-          </span>
-        )}
-
-        <span className="topbar-title">{title}</span>
-
-        <button
-          onClick={() => setOpen(!open)}
-          aria-label="Menu navigasi"
-          className="text-white p-1"
-        >
-          {open ? (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
+        <div className="max-w-6xl mx-auto w-full flex items-center justify-between">
+          {showBack ? (
+            <Link href={backHref} aria-label="Kembali" className="text-white p-1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 5l-7 7 7 7" />
+              </svg>
+            </Link>
           ) : (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
+            <span className="flex items-center gap-2 text-white font-bold text-base">
+              <Home size={20} /> RT 01
+            </span>
           )}
-        </button>
+
+          <span className="topbar-title">{title}</span>
+
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label="Menu navigasi"
+            className="text-white p-1"
+          >
+            {open ? (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Dropdown Menu */}

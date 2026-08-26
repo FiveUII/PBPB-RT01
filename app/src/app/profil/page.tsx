@@ -1,6 +1,7 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
+import { MapPin } from "lucide-react";
+
 import { getPengurus, getProfilRT } from "@/lib/actions";
 
 export const metadata = {
@@ -93,7 +94,7 @@ export default async function ProfilPage() {
         {/* Pengurus */}
         <section className="fade-up fade-up-delay-2">
           <h2 className="section-title">Susunan Pengurus RT</h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {pengurus.length === 0 ? (
               <p className="col-span-2 text-sm italic" style={{ color: "var(--text-muted)" }}>
                 Belum ada data pengurus.
@@ -119,10 +120,10 @@ export default async function ProfilPage() {
         {/* Lokasi */}
         <section className="card fade-up fade-up-delay-3">
           <div
-            className="flex items-center justify-center text-6xl"
+            className="flex items-center justify-center"
             style={{ height: 140, background: "var(--green-50)" }}
           >
-            🗺️
+            <MapPin size={48} style={{ color: "var(--green-800)" }} />
           </div>
           <div className="p-5">
             <h2 className="section-title mb-1">Lokasi Perumahan</h2>
@@ -133,16 +134,16 @@ export default async function ProfilPage() {
               href="https://maps.google.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-outline w-full text-center block"
+              className="btn-outline w-full text-center flex justify-center items-center gap-2"
             >
-              📍 Buka di Google Maps
+              <MapPin size={18} /> Buka di Google Maps
             </a>
           </div>
         </section>
       </main>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }

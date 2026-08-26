@@ -47,6 +47,7 @@ export default function FormProfil({ profil }: { profil: any }) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
     
     const result = await Swal.fire({
       title: "Simpan Profil RT?",
@@ -62,7 +63,7 @@ export default function FormProfil({ profil }: { profil: any }) {
     if (!result.isConfirmed) return;
 
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     
     // Combine misiList into a newline-separated string
     const misiString = misiList.filter(m => m.trim() !== "").join("\n");

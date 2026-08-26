@@ -1,6 +1,6 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
+
 import { getKegiatan } from "@/lib/actions";
 
 export const metadata = {
@@ -20,7 +20,7 @@ export default async function KegiatanPage() {
           Dokumentasi kegiatan warga RT 01 — diurutkan terbaru
         </p>
 
-        <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {kegiatan.length === 0 ? (
             <p className="text-sm italic" style={{ color: "var(--text-muted)" }}>
               Belum ada kegiatan yang dipublikasikan.
@@ -88,7 +88,7 @@ export default async function KegiatanPage() {
       </main>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }

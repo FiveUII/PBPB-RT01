@@ -1,6 +1,6 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
-import WhatsAppFAB from "@/components/WhatsAppFAB";
+
 import PushNotifButton from "@/components/PushNotifButton";
 import { getPengumuman } from "@/lib/actions";
 import Link from "next/link";
@@ -48,7 +48,7 @@ export default async function PengumumanPage() {
 
         {/* Feed */}
         <h2 className="section-title fade-up fade-up-delay-1">Semua Pengumuman</h2>
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {pengumumanList.length === 0 ? (
             <p className="text-sm italic" style={{ color: "var(--text-muted)" }}>
               Belum ada pengumuman terbaru.
@@ -83,7 +83,7 @@ export default async function PengumumanPage() {
       </main>
 
       <Footer />
-      <WhatsAppFAB />
+
     </div>
   );
 }
