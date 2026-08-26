@@ -2,7 +2,8 @@ import { getKegiatan, deleteKegiatan } from "@/lib/actions";
 import Topbar from "@/components/Topbar";
 import Link from "next/link";
 import FormKegiatan from "./FormKegiatan";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
+import DeleteButton from "@/components/DeleteButton";
 
 export const metadata = {
   title: "Kelola Kegiatan | Dashboard Admin",
@@ -41,15 +42,18 @@ export default async function AdminKegiatanPage(props: { searchParams: Promise<{
                       <Link href={`?editId=${item.id}`} className="text-blue-600 bg-blue-50 p-1.5 rounded hover:bg-blue-100">
                         <Pencil size={16} />
                       </Link>
-                      <form action={async () => { "use server"; await deleteKegiatan(item.id); }}>
-                        <button type="submit" className="text-red-600 bg-red-50 p-1.5 rounded hover:bg-red-100">
-                          <Trash2 size={16} />
-                        </button>
-                      </form>
+                      <DeleteButton onDelete={async () => { "use server"; await deleteKegiatan(item.id); }} itemName={item.judul} />
                     </div>
                   </div>
                   {item.foto_url && (
                     <img src={item.foto_url} alt={item.judul} className="w-full h-32 object-cover rounded-lg" />
+                  )}
+                  {item.galeri_urls && item.galeri_urls.length > 0 && (
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                      {item.galeri_urls.map((gUrl: string, idx: number) => (
+                        <img key={idx} src={gUrl} alt={`Galeri ${idx}`} className="w-16 h-16 rounded-md object-cover flex-shrink-0 border border-gray-200" />
+                      ))}
+                    </div>
                   )}
                   <p className="text-sm" style={{ color: "var(--text-muted)" }}>{item.deskripsi_singkat}</p>
                 </div>

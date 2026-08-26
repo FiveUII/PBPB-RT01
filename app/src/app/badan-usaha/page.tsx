@@ -27,8 +27,8 @@ const units = [
 ];
 
 export const metadata = {
-  title: "Badan Usaha | RT 01 Perumahan Harmoni",
-  description: "Unit usaha produktif milik warga RT 01 Perumahan Harmoni.",
+  title: "Badan Usaha Milik RT | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Unit usaha produktif yang dikelola oleh warga RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default function BadanUsahaPage() {

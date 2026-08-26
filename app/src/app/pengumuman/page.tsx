@@ -7,8 +7,8 @@ import Link from "next/link";
 import { BellRing } from "lucide-react";
 
 export const metadata = {
-  title: "Pengumuman | RT 01 Perumahan Harmoni",
-  description: "Pengumuman dan informasi terbaru dari pengurus RT 01 Perumahan Harmoni.",
+  title: "Pengumuman Warga | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Informasi dan pengumuman terbaru untuk warga RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default async function PengumumanPage() {

@@ -95,13 +95,14 @@ export async function getKegiatan() {
   return data || [];
 }
 
-export async function createKegiatan(formData: FormData, fotoUrl: string | null) {
+export async function createKegiatan(formData: FormData, fotoUrl: string | null, galeriUrls: string[] = []) {
   const supabase = await createClient();
   const { error } = await supabase.from("kegiatan").insert({
     judul: formData.get("judul"),
     tanggal_pelaksanaan: formData.get("tanggal_pelaksanaan"),
     deskripsi_singkat: formData.get("deskripsi_singkat"),
     foto_url: fotoUrl,
+    galeri_urls: galeriUrls,
   });
 
   if (error) throw new Error(error.message);
@@ -117,7 +118,7 @@ export async function deleteKegiatan(id: string) {
   revalidatePath("/admin/dashboard/kegiatan");
 }
 
-export async function updateKegiatan(formData: FormData, fotoUrl: string | null) {
+export async function updateKegiatan(formData: FormData, fotoUrl: string | null, galeriUrls: string[] | null = null) {
   const supabase = await createClient();
   const id = formData.get("id") as string;
   
@@ -128,6 +129,7 @@ export async function updateKegiatan(formData: FormData, fotoUrl: string | null)
   };
   
   if (fotoUrl) updateData.foto_url = fotoUrl;
+  if (galeriUrls && galeriUrls.length > 0) updateData.galeri_urls = galeriUrls;
 
   const { error } = await supabase.from("kegiatan").update(updateData).eq("id", id);
   if (error) throw new Error(error.message);
@@ -212,18 +214,21 @@ export async function getBadanUsaha() {
   return data || [];
 }
 
-export async function updateBadanUsaha(formData: FormData) {
+export async function updateBadanUsaha(formData: FormData, fotoUrl: string | null = null, galeriUrls: string[] | null = null) {
   const supabase = await createClient();
   const id = formData.get("id") as string;
-  const { error } = await supabase
-    .from("badan_usaha")
-    .update({
-      deskripsi: formData.get("deskripsi"),
-      jadwal_operasional: formData.get("jadwal_operasional"),
-      kontak_whatsapp: formData.get("kontak_whatsapp"),
-      updated_at: new Date().toISOString(),
-    })
-    .eq("id", id);
+  
+  const updateData: any = {
+    deskripsi: formData.get("deskripsi"),
+    jadwal_operasional: formData.get("jadwal_operasional"),
+    kontak_whatsapp: formData.get("kontak_whatsapp"),
+    updated_at: new Date().toISOString(),
+  };
+  
+  if (fotoUrl) updateData.foto_url = fotoUrl;
+  if (galeriUrls && galeriUrls.length > 0) updateData.galeri_urls = galeriUrls;
+
+  const { error } = await supabase.from("badan_usaha").update(updateData).eq("id", id);
 
   if (error) throw new Error(error.message);
   revalidatePath("/badan-usaha");
@@ -253,4 +258,40 @@ export async function uploadFile(file: File, folder: string): Promise<string | n
     .getPublicUrl(fileName);
 
   return publicUrlData.publicUrl;
+}
+
+// ==========================================
+// PROFIL RT ACTIONS
+// ==========================================
+export async function getProfilRT() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("profil_rt")
+    .select("*")
+    .eq("id", 1)
+    .single();
+  
+  if (error) {
+    console.error("Error fetching profil RT:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function updateProfilRT(formData: FormData, galeriUrls: string[] | null = null) {
+  const supabase = await createClient();
+  
+  const updateData: any = {
+    deskripsi: formData.get("deskripsi"),
+    visi: formData.get("visi"),
+    misi: formData.get("misi"),
+  };
+  
+  if (galeriUrls !== null) updateData.galeri_urls = galeriUrls;
+
+  const { error } = await supabase.from("profil_rt").update(updateData).eq("id", 1);
+
+  if (error) throw new Error(error.message);
+  revalidatePath("/profil");
+  revalidatePath("/admin/dashboard/pengurus");
 }

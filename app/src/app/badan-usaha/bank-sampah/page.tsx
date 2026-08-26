@@ -1,7 +1,7 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
 import WhatsAppFAB from "@/components/WhatsAppFAB";
-import { getPengurus } from "@/lib/actions";
+import { getPengurus, getBadanUsaha } from "@/lib/actions";
 import Link from "next/link";
 
 export const metadata = {
@@ -11,6 +11,8 @@ export const metadata = {
 
 export default async function BankSampahPage() {
   const pengurus = await getPengurus("BANK_SAMPAH");
+  const semuaUsaha = await getBadanUsaha();
+  const infoUsaha = semuaUsaha.find(u => u.nama_usaha.toLowerCase().includes("sampah"));
 
   // Helper to get initials
   const getInitials = (name: string) => {
@@ -29,16 +31,22 @@ export default async function BankSampahPage() {
       <main className="flex-1">
         {/* Hero */}
         <div
-          className="flex items-end px-5 pb-6 pt-16"
+          className="flex items-end px-5 pb-6 pt-16 relative overflow-hidden"
           style={{
-            minHeight: 200,
-            background: "linear-gradient(160deg, #92400e, var(--gold))",
+            minHeight: infoUsaha?.foto_url ? 250 : 200,
+            background: infoUsaha?.foto_url ? "none" : "linear-gradient(160deg, #92400e, var(--gold))",
           }}
         >
-          <div>
+          {infoUsaha?.foto_url && (
+            <div className="absolute inset-0 z-0">
+               <img src={infoUsaha.foto_url} alt="Cover Bank Sampah" className="w-full h-full object-cover" />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            </div>
+          )}
+          <div className="relative z-10">
             <span className="text-5xl block mb-2">♻️</span>
             <h1 className="text-2xl font-extrabold text-white">Bank Sampah Guyub Rukun</h1>
-            <p className="text-white/70 text-sm mt-1">Unit Usaha RT 01 Perumahan Harmoni</p>
+            <p className="text-white/80 text-sm mt-1 font-medium">Unit Usaha RT 01 Perumahan Harmoni</p>
           </div>
         </div>
 
@@ -53,14 +61,21 @@ export default async function BankSampahPage() {
           <section className="card p-5 fade-up fade-up-delay-1">
             <h2 className="section-title mb-3">Tentang Usaha</h2>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-              Bank Sampah Guyub Rukun adalah program pengelolaan sampah berbasis komunitas yang
-              mengubah sampah anorganik rumah tangga menjadi nilai ekonomis.
-            </p>
-            <p className="text-sm leading-relaxed mt-2" style={{ color: "var(--text-muted)" }}>
-              Warga dapat menukarkan sampah (botol plastik, kardus, kertas, logam) dengan saldo
-              tabungan atau langsung ditukar sembako sesuai ketentuan yang berlaku.
+              {infoUsaha?.deskripsi || `Bank Sampah Guyub Rukun adalah program pengelolaan sampah berbasis komunitas yang mengubah sampah anorganik rumah tangga menjadi nilai ekonomis.`}
             </p>
           </section>
+
+          {/* Gallery */}
+          {infoUsaha?.galeri_urls && infoUsaha.galeri_urls.length > 0 && (
+            <section className="fade-up fade-up-delay-1">
+               <h2 className="section-title mb-3 px-1">Galeri Foto</h2>
+               <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
+                 {infoUsaha.galeri_urls.map((url: string, idx: number) => (
+                   <img key={idx} src={url} alt={`Galeri ${idx}`} className="w-36 h-36 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100" />
+                 ))}
+               </div>
+            </section>
+          )}
 
           {/* Info Operasional */}
           <section className="card p-5 fade-up fade-up-delay-2">
@@ -68,10 +83,9 @@ export default async function BankSampahPage() {
             <div className="flex flex-col gap-3">
               {[
                 { icon: "📍", label: "Lokasi Penimbangan", val: "Poskamling RT, Blok A" },
-                { icon: "🕗", label: "Jadwal Operasional", val: "Setiap Minggu, 08.00–11.00 WIB" },
+                { icon: "🕗", label: "Jadwal Operasional", val: infoUsaha?.jadwal_operasional || "Setiap Minggu, 08.00–11.00 WIB" },
                 { icon: "🗑️", label: "Sampah Diterima", val: "Plastik, Kardus, Kertas, Logam" },
-                { icon: "💰", label: "Sistem Tukar", val: "Saldo Tabungan / Sembako" },
-                { icon: "📞", label: "Kontak", val: "Dewi Rahayu (0812-XXXX-XXXX)" },
+                { icon: "📞", label: "Kontak", val: infoUsaha?.kontak_whatsapp || "Dewi Rahayu" },
               ].map((info) => (
                 <div key={info.label} className="flex items-start gap-3">
                   <span className="text-lg flex-shrink-0">{info.icon}</span>

@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { createPengumuman, updatePengumuman } from "@/lib/actions";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function FormPengumuman({ initialData }: { initialData?: any }) {
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,22 @@ export default function FormPengumuman({ initialData }: { initialData?: any }) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    
+    if (initialData) {
+      const result = await Swal.fire({
+        title: "Simpan Perubahan?",
+        text: "Pastikan data yang diubah sudah benar.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#16a34a",
+        cancelButtonColor: "#6b7280",
+        confirmButtonText: "Ya, Simpan",
+        cancelButtonText: "Batal",
+        reverseButtons: true,
+      });
+      if (!result.isConfirmed) return;
+    }
+
     setLoading(true);
 
     const form = e.currentTarget;
@@ -30,15 +47,15 @@ export default function FormPengumuman({ initialData }: { initialData?: any }) {
       if (initialData) {
         formData.append("id", initialData.id);
         await updatePengumuman(formData);
-        alert("Pengumuman berhasil diperbarui!");
+        await Swal.fire("Berhasil!", "Pengumuman berhasil diperbarui.", "success");
         router.push("/admin/dashboard/pengumuman");
       } else {
         await createPengumuman(formData);
-        alert("Pengumuman berhasil dibuat!");
+        await Swal.fire("Berhasil!", "Pengumuman berhasil dibuat.", "success");
         form.reset();
       }
     } catch (err: any) {
-      alert("Terjadi kesalahan: " + err.message);
+      Swal.fire("Gagal", err.message || "Gagal menyimpan data.", "error");
     } finally {
       setLoading(false);
     }

@@ -1,15 +1,17 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
 import WhatsAppFAB from "@/components/WhatsAppFAB";
-import { getPengurus } from "@/lib/actions";
+import { getPengurus, getProfilRT } from "@/lib/actions";
 
 export const metadata = {
-  title: "Profil RT | RT 01 Perumahan Harmoni",
-  description: "Profil, visi misi, susunan pengurus, dan lokasi RT 01 Perumahan Harmoni.",
+  title: "Profil RT | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Profil, visi misi, susunan pengurus, dan lokasi RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default async function ProfilPage() {
   const pengurus = await getPengurus("RT");
+  const profilRT = await getProfilRT();
+  const misiArray = profilRT?.misi ? profilRT.misi.split("\n").filter((m: string) => m.trim() !== "") : [];
 
   // Helper to get initials
   const getInitials = (name: string) => {
@@ -28,14 +30,23 @@ export default async function ProfilPage() {
       <main className="container-app py-6 flex flex-col gap-6 flex-1">
         {/* Tentang */}
         <section className="card p-5 fade-up">
-          <h2 className="section-title mb-3">Tentang RT 01 Perumahan Harmoni</h2>
-          <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            RT 01 Perumahan Harmoni adalah komunitas residensial yang mengutamakan kebersamaan,
-            keamanan, dan kelestarian lingkungan hidup. Berlokasi strategis dengan fasilitas
-            lengkap, kami berkomitmen menciptakan ruang tinggal yang asri dan nyaman bagi
-            seluruh warga dan keluarga.
+          <h2 className="section-title mb-3">Tentang RT 01 Perumahan Bukit Pinang Bahari</h2>
+          <p className="text-sm leading-relaxed whitespace-pre-line" style={{ color: "var(--text-muted)" }}>
+            {profilRT?.deskripsi || `RT 01 Perumahan Bukit Pinang Bahari adalah komunitas residensial yang mengutamakan kebersamaan, keamanan, dan kelestarian lingkungan hidup. Berlokasi strategis dengan fasilitas lengkap, kami berkomitmen menciptakan ruang tinggal yang asri dan nyaman bagi seluruh warga dan keluarga.`}
           </p>
         </section>
+        
+        {/* Gallery Slider */}
+        {profilRT?.galeri_urls && profilRT.galeri_urls.length > 0 && (
+          <section className="fade-up fade-up-delay-1">
+             <h2 className="section-title mb-3 px-1">Galeri Lingkungan</h2>
+             <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
+               {profilRT.galeri_urls.map((url: string, idx: number) => (
+                 <img key={idx} src={url} alt={`Galeri ${idx}`} className="w-40 h-40 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100" />
+               ))}
+             </div>
+          </section>
+        )}
 
         {/* Visi Misi */}
         <section className="fade-up fade-up-delay-1">
@@ -45,8 +56,8 @@ export default async function ProfilPage() {
               <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--gold)" }}>
                 Visi
               </p>
-              <p className="font-semibold text-sm" style={{ color: "var(--text-dark)" }}>
-                Menjadi lingkungan yang aman, bersih, harmonis, dan sejahtera bagi seluruh warga.
+              <p className="font-semibold text-sm whitespace-pre-line" style={{ color: "var(--text-dark)" }}>
+                {profilRT?.visi || "Menjadi lingkungan yang aman, bersih, harmonis, dan sejahtera bagi seluruh warga."}
               </p>
             </div>
             <div className="card p-5" style={{ borderLeft: "4px solid var(--green-800)" }}>
@@ -54,17 +65,26 @@ export default async function ProfilPage() {
                 Misi
               </p>
               <ul className="text-sm space-y-1.5" style={{ color: "var(--text-muted)" }}>
-                {[
-                  "Meningkatkan keamanan dan ketertiban lingkungan",
-                  "Menjaga kebersihan dan kelestarian lingkungan hidup",
-                  "Mempererat tali silaturahmi antar warga",
-                  "Mengembangkan potensi ekonomi warga melalui BUMRT",
-                ].map((m) => (
-                  <li key={m} className="flex items-start gap-2">
-                    <span style={{ color: "var(--green-800)" }} className="mt-0.5 flex-shrink-0">✓</span>
-                    <span>{m}</span>
-                  </li>
-                ))}
+                {misiArray.length > 0 ? (
+                  misiArray.map((m: string) => (
+                    <li key={m} className="flex items-start gap-2">
+                      <span style={{ color: "var(--green-800)" }} className="mt-0.5 flex-shrink-0">✓</span>
+                      <span>{m}</span>
+                    </li>
+                  ))
+                ) : (
+                  [
+                    "Meningkatkan keamanan dan ketertiban lingkungan",
+                    "Menjaga kebersihan dan kelestarian lingkungan hidup",
+                    "Mempererat tali silaturahmi antar warga",
+                    "Mengembangkan potensi ekonomi warga melalui BUMRT",
+                  ].map((m) => (
+                    <li key={m} className="flex items-start gap-2">
+                      <span style={{ color: "var(--green-800)" }} className="mt-0.5 flex-shrink-0">✓</span>
+                      <span>{m}</span>
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </div>
@@ -107,7 +127,7 @@ export default async function ProfilPage() {
           <div className="p-5">
             <h2 className="section-title mb-1">Lokasi Perumahan</h2>
             <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>
-              Perumahan Harmoni, Blok A–F
+              Perumahan Bukit Pinang Bahari, Samarinda
             </p>
             <a
               href="https://maps.google.com"

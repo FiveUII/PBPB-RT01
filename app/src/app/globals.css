@@ -2,13 +2,13 @@
 @import "tailwindcss";
 
 :root {
-  --green-900: #012d1d;
-  --green-800: #1B4332;
-  --green-700: #2d6a4f;
-  --green-100: #c1ecd4;
+  --green-900: #14532d;
+  --green-800: #16a34a;
+  --green-700: #15803d;
+  --green-100: #dcfce7;
   --green-50:  #f0fdf4;
-  --gold:      #D4A017;
-  --gold-light:#ffc641;
+  --gold:      #e11d48;
+  --gold-light:#fb7185;
   --surface:   #f9f9ff;
   --white:     #ffffff;
   --text-dark: #151c27;

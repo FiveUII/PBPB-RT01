@@ -1,48 +1,55 @@
 "use client";
 import { useState, useEffect } from "react";
-import { updateBadanUsaha, uploadFile } from "@/lib/actions";
+import { updateProfilRT, uploadFile } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
-export default function FormUsaha({ usaha }: { usaha: any }) {
+export default function FormProfil({ profil }: { profil: any }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const [file, setFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  // Dynamic Misi
+  const [misiList, setMisiList] = useState<string[]>([]);
   
+  // Gallery State
   const [existingGaleriUrls, setExistingGaleriUrls] = useState<string[]>([]);
   const [newGalleryFiles, setNewGalleryFiles] = useState<File[]>([]);
   const [newGalleryPreviewUrls, setNewGalleryPreviewUrls] = useState<string[]>([]);
 
   useEffect(() => {
-    if (usaha) {
-      if (usaha.galeri_urls) {
-        setExistingGaleriUrls(usaha.galeri_urls);
+    if (profil) {
+      if (profil.misi) {
+        setMisiList(profil.misi.split("\n").filter((m: string) => m.trim() !== ""));
+      } else {
+        setMisiList([""]);
       }
-      if (usaha.foto_url) {
-        setPreviewUrl(usaha.foto_url);
+      
+      if (profil.galeri_urls) {
+        setExistingGaleriUrls(profil.galeri_urls);
       }
     }
-  }, [usaha]);
+  }, [profil]);
 
-  useEffect(() => {
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl);
-    } else if (usaha?.foto_url) {
-      setPreviewUrl(usaha.foto_url);
-    } else {
-      setPreviewUrl(null);
-    }
-  }, [file, usaha]);
+  const handleMisiChange = (index: number, value: string) => {
+    const newList = [...misiList];
+    newList[index] = value;
+    setMisiList(newList);
+  };
+
+  const handleAddMisi = () => {
+    setMisiList([...misiList, ""]);
+  };
+
+  const handleRemoveMisi = (index: number) => {
+    const newList = misiList.filter((_, i) => i !== index);
+    setMisiList(newList.length > 0 ? newList : [""]); // Always keep at least one
+  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     
     const result = await Swal.fire({
-      title: "Simpan Perubahan?",
+      title: "Simpan Profil RT?",
       text: "Pastikan data yang diubah sudah benar.",
       icon: "question",
       showCancelButton: true,
@@ -56,24 +63,27 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
 
     setLoading(true);
     const formData = new FormData(e.currentTarget);
-    formData.append("id", usaha.id);
+    
+    // Combine misiList into a newline-separated string
+    const misiString = misiList.filter(m => m.trim() !== "").join("\n");
+    formData.append("misi", misiString);
 
     try {
-      let fotoUrl = null;
-      if (file) {
-        fotoUrl = await uploadFile(file, "badan_usaha");
-      }
-      
       let uploadedUrls: string[] = [];
       if (newGalleryFiles.length > 0) {
-        uploadedUrls = await Promise.all(newGalleryFiles.map(f => uploadFile(f, "badan_usaha"))) as string[];
+        uploadedUrls = await Promise.all(newGalleryFiles.map(f => uploadFile(f, "profil"))) as string[];
       }
       
       const finalGaleriUrls = [...existingGaleriUrls, ...uploadedUrls];
 
-      await updateBadanUsaha(formData, fotoUrl, finalGaleriUrls);
-      await Swal.fire("Berhasil!", "Info badan usaha diperbarui.", "success");
-      router.push("/admin/dashboard/usaha");
+      await updateProfilRT(formData, finalGaleriUrls);
+      await Swal.fire("Berhasil!", "Profil RT berhasil diperbarui.", "success");
+      
+      // Reset new gallery state
+      setNewGalleryFiles([]);
+      setNewGalleryPreviewUrls([]);
+      
+      router.refresh();
     } catch (err: any) {
       Swal.fire("Gagal", err.message || "Gagal menyimpan data.", "error");
     } finally {
@@ -82,55 +92,54 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div>
-        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Nama Usaha</label>
-        <input type="text" value={usaha.nama_usaha} disabled className="w-full rounded-lg px-3 py-2 text-sm border bg-gray-50 text-gray-500 cursor-not-allowed outline-none" />
+        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Deskripsi RT</label>
+        <textarea name="deskripsi" defaultValue={profil?.deskripsi || ""} required rows={4} className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" placeholder="Tuliskan deksripsi RT..."></textarea>
       </div>
 
       <div>
-        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Deskripsi Usaha</label>
-        <textarea name="deskripsi" defaultValue={usaha.deskripsi || ""} required rows={3} className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]"></textarea>
-      </div>
-      
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Jadwal Operasional</label>
-          <input type="text" name="jadwal_operasional" defaultValue={usaha.jadwal_operasional || ""} className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Kontak WhatsApp</label>
-          <input type="text" name="kontak_whatsapp" defaultValue={usaha.kontak_whatsapp || ""} placeholder="Contoh: 0812-XXXX-XXXX" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
-        </div>
+        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Visi</label>
+        <textarea name="visi" defaultValue={profil?.visi || ""} required rows={3} className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" placeholder="Tuliskan visi..."></textarea>
       </div>
       
       <div>
-        <label className="block text-xs font-semibold mb-2" style={{ color: "var(--text-muted)" }}>
-          Foto Utama (Thumbnail) (Opsional)
-        </label>
-        <div className="flex items-center gap-4">
-          {previewUrl ? (
-            <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-gray-200 flex-shrink-0 shadow-sm bg-white">
-              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+        <label className="block text-xs font-semibold mb-2" style={{ color: "var(--text-muted)" }}>Misi</label>
+        <div className="flex flex-col gap-2">
+          {misiList.map((misi, idx) => (
+            <div key={idx} className="flex items-center gap-2">
+              <span className="text-gray-400 font-bold text-sm w-4">{idx + 1}.</span>
+              <input 
+                type="text" 
+                value={misi} 
+                onChange={(e) => handleMisiChange(idx, e.target.value)}
+                className="flex-1 rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" 
+                placeholder="Tuliskan poin misi..."
+                required
+              />
+              <button 
+                type="button" 
+                onClick={() => handleRemoveMisi(idx)}
+                className="text-red-500 hover:bg-red-50 p-2 rounded-lg"
+                title="Hapus Misi"
+              >
+                ✕
+              </button>
             </div>
-          ) : (
-            <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 flex-shrink-0 text-gray-400 text-2xl shadow-sm">
-              📸
-            </div>
-          )}
-          <div className="flex-1">
-             <input type="file" id="foto_upload" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} className="hidden" />
-             <label htmlFor="foto_upload" className="inline-block bg-white border border-gray-300 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm">
-               Pilih Foto
-             </label>
-             <p className="text-xs text-gray-400 mt-1 truncate max-w-[150px]">{file ? file.name : "Format JPG/PNG"}</p>
-          </div>
+          ))}
+          <button 
+            type="button" 
+            onClick={handleAddMisi}
+            className="text-[var(--green-800)] border border-dashed border-[var(--green-800)] rounded-lg py-2 mt-1 text-sm font-semibold hover:bg-[var(--green-50)] transition-colors"
+          >
+            + Tambah Misi
+          </button>
         </div>
       </div>
 
-      <div>
+      <div className="mt-2">
         <label className="block text-xs font-semibold mb-2" style={{ color: "var(--text-muted)" }}>
-          Galeri Foto Tambahan (Bisa pilih banyak sekaligus)
+          Galeri Foto Profil RT (Bisa pilih banyak sekaligus)
         </label>
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 rounded-lg overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 flex-shrink-0 text-gray-400 text-2xl shadow-sm">
@@ -139,7 +148,7 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
           <div className="flex-1">
             <input 
               type="file" 
-              id="galeri_upload"
+              id="profil_galeri_upload"
               accept="image/*" 
               multiple 
               onChange={(e) => {
@@ -152,7 +161,7 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
               }} 
               className="hidden" 
             />
-             <label htmlFor="galeri_upload" className="inline-block bg-white border border-gray-300 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm">
+             <label htmlFor="profil_galeri_upload" className="inline-block bg-white border border-gray-300 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors shadow-sm">
                Pilih Beberapa Foto
              </label>
              <p className="text-xs text-gray-400 mt-1 truncate max-w-[200px]">{newGalleryFiles.length > 0 ? `${newGalleryFiles.length} file baru dipilih` : "Bisa lebih dari 1 foto"}</p>
@@ -184,8 +193,8 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
         )}
       </div>
 
-      <button type="submit" disabled={loading} className="btn-primary mt-2">
-        {loading ? "Menyimpan..." : "Simpan Perubahan"}
+      <button type="submit" disabled={loading} className="btn-primary mt-4">
+        {loading ? "Menyimpan..." : "Simpan Profil RT"}
       </button>
     </form>
   );

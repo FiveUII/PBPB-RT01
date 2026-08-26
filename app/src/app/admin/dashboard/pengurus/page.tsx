@@ -1,8 +1,10 @@
-import { getPengurus, deletePengurus } from "@/lib/actions";
+import { getPengurus, deletePengurus, getProfilRT } from "@/lib/actions";
 import Topbar from "@/components/Topbar";
 import Link from "next/link";
 import FormPengurus from "./FormPengurus";
-import { Pencil, Trash2 } from "lucide-react";
+import FormProfil from "./FormProfil";
+import { Pencil } from "lucide-react";
+import DeleteButton from "@/components/DeleteButton";
 
 export const metadata = {
   title: "Kelola Pengurus | Dashboard Admin",
@@ -15,6 +17,7 @@ export default async function AdminPengurusPage(props: { searchParams: Promise<{
   const pengurusListBankSampah = await getPengurus("BANK_SAMPAH");
   const allPengurus = [...pengurusListRT, ...pengurusListBioflok, ...pengurusListBankSampah];
   const editItem = allPengurus.find((p: any) => p.id === searchParams.editId);
+  const profilRT = await getProfilRT();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "var(--surface)" }}>
@@ -22,6 +25,11 @@ export default async function AdminPengurusPage(props: { searchParams: Promise<{
 
       <main className="container-app py-6 flex-1 flex flex-col gap-6">
         
+        <section className="card p-5">
+          <h2 className="section-title mb-4">Pengaturan Profil RT</h2>
+          <FormProfil profil={profilRT} />
+        </section>
+
         <section className="card p-5">
           <h2 className="section-title mb-4">{editItem ? "Edit Pengurus" : "Tambah Pengurus"}</h2>
           <FormPengurus initialData={editItem} />
@@ -50,11 +58,7 @@ export default async function AdminPengurusPage(props: { searchParams: Promise<{
                     <Link href={`?editId=${item.id}`} className="text-blue-600 bg-blue-50 p-2 rounded hover:bg-blue-100">
                       <Pencil size={16} />
                     </Link>
-                    <form action={async () => { "use server"; await deletePengurus(item.id); }}>
-                      <button type="submit" className="text-red-600 bg-red-50 p-2 rounded hover:bg-red-100">
-                        <Trash2 size={16} />
-                      </button>
-                    </form>
+                    <DeleteButton onDelete={async () => { "use server"; await deletePengurus(item.id); }} itemName={item.nama} />
                   </div>
                 </div>
               ))

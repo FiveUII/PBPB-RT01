@@ -4,8 +4,8 @@ import WhatsAppFAB from "@/components/WhatsAppFAB";
 import { getKegiatan } from "@/lib/actions";
 
 export const metadata = {
-  title: "Kegiatan Warga | RT 01 Perumahan Harmoni",
-  description: "Dokumentasi kegiatan dan acara warga RT 01 Perumahan Harmoni.",
+  title: "Kegiatan Warga | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Dokumentasi kegiatan dan acara warga RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default async function KegiatanPage() {
@@ -59,9 +59,18 @@ export default async function KegiatanPage() {
                   <h3 className="font-bold text-base mb-1" style={{ color: "var(--text-dark)" }}>
                     {item.judul}
                   </h3>
-                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                  <p className="text-sm leading-relaxed mb-3" style={{ color: "var(--text-muted)" }}>
                     {item.deskripsi_singkat}
                   </p>
+
+                  {/* Gallery */}
+                  {item.galeri_urls && item.galeri_urls.length > 0 && (
+                    <div className="flex gap-2 overflow-x-auto pb-2 snap-x hide-scrollbar">
+                      {item.galeri_urls.map((gUrl: string, idx: number) => (
+                        <img key={idx} src={gUrl} alt={`Galeri ${idx}`} className="w-20 h-20 rounded-md object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100" />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </article>
             ))

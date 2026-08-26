@@ -2,7 +2,8 @@ import { getPengumuman, deletePengumuman } from "@/lib/actions";
 import Topbar from "@/components/Topbar";
 import Link from "next/link";
 import FormPengumuman from "./FormPengumuman";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil } from "lucide-react";
+import DeleteButton from "@/components/DeleteButton";
 
 export const metadata = {
   title: "Kelola Pengumuman | Dashboard Admin",
@@ -45,11 +46,7 @@ export default async function AdminPengumumanPage(props: { searchParams: Promise
                       <Link href={`?editId=${item.id}`} className="text-blue-600 bg-blue-50 p-1.5 rounded hover:bg-blue-100">
                         <Pencil size={16} />
                       </Link>
-                      <form action={async () => { "use server"; await deletePengumuman(item.id); }}>
-                        <button type="submit" className="text-red-600 bg-red-50 p-1.5 rounded hover:bg-red-100">
-                          <Trash2 size={16} />
-                        </button>
-                      </form>
+                      <DeleteButton onDelete={async () => { "use server"; await deletePengumuman(item.id); }} itemName={item.judul} />
                     </div>
                   </div>
                   <p className="text-sm line-clamp-2" style={{ color: "var(--text-muted)" }}>{item.deskripsi}</p>
