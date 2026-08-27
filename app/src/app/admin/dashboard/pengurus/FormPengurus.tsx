@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 export default function FormPengurus({ initialData }: { initialData?: any }) {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [hapusFoto, setHapusFoto] = useState(false);
   const [loading, setLoading] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
       setPreviewUrl(null);
     }
     setFile(null);
+    setHapusFoto(false);
   }, [initialData]);
 
   useEffect(() => {
@@ -60,6 +62,9 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
 
     try {
       const formData = new FormData(form);
+      if (hapusFoto && !file) {
+        formData.append("hapus_foto", "true");
+      }
       
       let fotoUrl = null;
       if (file) {
@@ -121,8 +126,24 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
         </label>
         <div className="flex items-center gap-4">
           {previewUrl ? (
-            <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-200 flex-shrink-0 shadow-sm bg-white">
-              <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+            <div className="relative w-16 h-16 rounded-full flex-shrink-0 shadow-sm group">
+              <div className="w-full h-full rounded-full overflow-hidden border-2 border-gray-200 bg-white">
+                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+              </div>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setFile(null);
+                  setPreviewUrl(null);
+                  setHapusFoto(true);
+                  const input = document.getElementById("foto_upload") as HTMLInputElement;
+                  if (input) input.value = "";
+                }}
+                className="absolute top-0 right-0 bg-red-500 hover:bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
+                title="Hapus foto"
+              >
+                ✕
+              </button>
             </div>
           ) : (
             <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 flex-shrink-0 text-gray-400 text-2xl shadow-sm">

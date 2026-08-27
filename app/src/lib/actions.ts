@@ -192,7 +192,11 @@ export async function updatePengurus(formData: FormData, fotoUrl: string | null)
     urutan: parseInt(formData.get("urutan") as string) || 99,
   };
   
-  if (fotoUrl) updateData.foto_url = fotoUrl;
+  if (fotoUrl) {
+    updateData.foto_url = fotoUrl;
+  } else if (formData.get("hapus_foto") === "true") {
+    updateData.foto_url = null;
+  }
 
   const { error } = await supabase.from("pengurus").update(updateData).eq("id", id);
   if (error) throw new Error(error.message);
