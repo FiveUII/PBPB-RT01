@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
+import VisitorTracker from "@/components/VisitorTracker";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -27,7 +28,10 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </head>
-      <body className="min-h-screen bg-[var(--surface)]">{children}</body>
+      <body className="min-h-screen bg-[var(--surface)]">
+        <VisitorTracker />
+        {children}
+      </body>
     </html>
   );
 }

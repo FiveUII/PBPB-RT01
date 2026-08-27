@@ -302,3 +302,39 @@ export async function updateProfilRT(formData: FormData, galeriUrls: string[] | 
   revalidatePath("/profil");
   revalidatePath("/admin/dashboard/pengurus");
 }
+
+// ==========================================
+// STATISTIK KUNJUNGAN ACTIONS
+// ==========================================
+export async function trackVisit() {
+  const supabase = await createClient();
+  // Using RPC to safely increment the visit counter for today
+  await supabase.rpc("catat_kunjungan");
+}
+
+export async function getStatistikKunjungan() {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("statistik_kunjungan")
+    .select("*")
+    .order("tanggal", { ascending: true });
+    
+  if (error) {
+    console.error("Error fetching stats:", error);
+    return { total: 0, hariIni: 0, rataRata: 0, raw: [] };
+  }
+  
+  if (!data || data.length === 0) {
+    return { total: 0, hariIni: 0, rataRata: 0, raw: [] };
+  }
+
+  const total = data.reduce((sum, row) => sum + row.jumlah_pengunjung, 0);
+  
+  const today = new Date().toISOString().split('T')[0];
+  const todayData = data.find(row => row.tanggal === today);
+  const hariIni = todayData ? todayData.jumlah_pengunjung : 0;
+  
+  const rataRata = (total / data.length).toFixed(1);
+
+  return { total, hariIni, rataRata: parseFloat(rataRata), raw: data };
+}

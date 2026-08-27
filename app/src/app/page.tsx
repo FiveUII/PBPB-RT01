@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import Footer from "@/components/Footer";
-import { getPengumuman } from "@/lib/actions";
+import { getPengumuman, getStatistikKunjungan } from "@/lib/actions";
+import StatistikWidget from "@/components/StatistikWidget";
 import { Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
 
 const navCards = [
@@ -31,6 +32,7 @@ const navCards = [
 export default async function HomePage() {
   const pengumumanList = await getPengumuman();
   const latestPengumuman = pengumumanList[0];
+  const stats = await getStatistikKunjungan();
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f6f8]">
@@ -131,6 +133,11 @@ export default async function HomePage() {
                 </div>
               </Link>
             ))}
+          </div>
+          
+          {/* Statistik Sederhana */}
+          <div className="mt-8 flex justify-center w-full">
+            <StatistikWidget total={stats.total} hariIni={stats.hariIni} rataRata={stats.rataRata} variant="public" />
           </div>
         </div>
       </div>

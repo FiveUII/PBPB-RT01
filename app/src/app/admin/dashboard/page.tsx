@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import LogoutButton from "@/app/admin/dashboard/LogoutButton";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { getStatistikKunjungan } from "@/lib/actions";
+import StatistikWidget from "@/components/StatistikWidget";
 
 import { Calendar, BellRing, Users, Briefcase } from "lucide-react";
 
@@ -22,6 +24,8 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect("/admin");
+  
+  const stats = await getStatistikKunjungan();
 
   return (
     <div className="min-h-screen flex flex-col relative bg-[#f4f6f8] overflow-x-hidden">
@@ -57,8 +61,13 @@ export default async function DashboardPage() {
           </span>
         </div>
 
-        {/* Quick Actions */}
+        {/* Statistik Widget */}
         <section className="fade-up fade-up-delay-1">
+          <StatistikWidget total={stats.total} hariIni={stats.hariIni} rataRata={stats.rataRata} variant="admin" />
+        </section>
+
+        {/* Quick Actions */}
+        <section className="fade-up fade-up-delay-2">
           <h2 className="section-title">Kelola Konten</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {menuItems.map((item) => (
@@ -82,7 +91,7 @@ export default async function DashboardPage() {
 
         {/* Info */}
         <div
-          className="rounded-2xl p-4 text-sm fade-up fade-up-delay-2"
+          className="rounded-2xl p-4 text-sm fade-up fade-up-delay-3"
           style={{ background: "var(--green-50)", color: "var(--green-800)" }}
         >
           <p className="font-semibold mb-1">💡 Panduan Penggunaan</p>

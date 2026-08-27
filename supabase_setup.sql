@@ -126,3 +126,29 @@ VALUES
   ('Ternak Ikan Bioflok', 'bioflok', 'Unit usaha Ternak Ikan Bioflok RT 01 menggunakan teknologi bioflok hemat air.', 'Setiap 60–90 hari panen', '0812-XXXX-XXXX'),
   ('Bank Sampah Guyub Rukun', 'bank-sampah', 'Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Minggu pagi.', 'Setiap Minggu, 08.00–11.00 WIB', '0812-XXXX-XXXX')
 ON CONFLICT (slug) DO NOTHING;
+
+-- ==========================================
+-- STATISTIK KUNJUNGAN
+-- ==========================================
+CREATE TABLE statistik_kunjungan (
+  tanggal DATE PRIMARY KEY DEFAULT CURRENT_DATE,
+  jumlah_pengunjung INT DEFAULT 1
+);
+
+-- Buka RLS hanya agar aman, tidak ada insert dari anon secara langsung
+ALTER TABLE statistik_kunjungan ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Publik bisa melihat statistik" ON statistik_kunjungan FOR SELECT USING (true);
+
+-- Fungsi RPC untuk mencatat pengunjung tanpa perlu RLS khusus insert anon
+CREATE OR REPLACE FUNCTION catat_kunjungan()
+RETURNS void
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  INSERT INTO statistik_kunjungan (tanggal, jumlah_pengunjung) 
+  VALUES (CURRENT_DATE, 1) 
+  ON CONFLICT (tanggal) 
+  DO UPDATE SET jumlah_pengunjung = statistik_kunjungan.jumlah_pengunjung + 1;
+END;
+$$;
