@@ -44,6 +44,7 @@ export default async function BadanUsahaPage() {
       nama: dbData?.nama_usaha || unit.nama,
       deskripsi: dbData?.deskripsi || unit.deskripsi,
       foto_url: dbData?.foto_url || null,
+      chips: ["Aktif", dbData?.label_tag || unit.chips[1]],
     };
   });
 

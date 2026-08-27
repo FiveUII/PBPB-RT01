@@ -104,6 +104,12 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
           <input type="text" name="kontak_whatsapp" defaultValue={usaha.kontak_whatsapp || ""} placeholder="Contoh: 0812-XXXX-XXXX" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
         </div>
       </div>
+
+      <div>
+        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Label Khusus / Tag (Opsional)</label>
+        <input type="text" name="label_tag" defaultValue={usaha.label_tag || ""} placeholder="Contoh: Setiap Sabtu, atau Menjual Ikan Nila" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
+        <p className="text-[10px] text-gray-400 mt-1">Label ini akan tampil di samping label Aktif di halaman publik.</p>
+      </div>
       
       <div>
         <label className="block text-xs font-semibold mb-2" style={{ color: "var(--text-muted)" }}>

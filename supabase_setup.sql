@@ -44,6 +44,7 @@ CREATE TABLE badan_usaha (
   jadwal_operasional  TEXT,
   kontak_whatsapp     TEXT,
   foto_url            TEXT,
+  label_tag           TEXT,
   updated_at          TIMESTAMPTZ DEFAULT NOW()
 );
 
