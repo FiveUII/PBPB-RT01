@@ -40,76 +40,54 @@ export default function StatistikWidget({ total, hariIni, rataRata, variant = "p
     );
   }
 
-  // Full version for admin
+  // Full version for admin (Compact 1-row design)
   return (
-    <div className="rounded-2xl p-6 md:p-8 w-full shadow-xl text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, var(--green-900), var(--green-800))" }}>
+    <div className="rounded-2xl p-4 md:p-5 shadow-sm text-white relative overflow-hidden" style={{ background: "linear-gradient(135deg, var(--green-900), var(--green-800))" }}>
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
       
-      <div className="mb-6 relative z-10">
-        <h3 className="text-[11px] tracking-widest text-amber-300 uppercase font-bold mb-1">Analitik Website</h3>
-        <h2 className="text-2xl md:text-3xl font-bold">Statistik Pengunjung</h2>
-        <p className="text-xs text-emerald-100/70 mt-1">Data lalu lintas kunjungan portal RT 01</p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
-        {/* Total Card */}
-        <div className="rounded-xl p-5 border border-white/10 flex flex-col justify-between" style={{ background: "rgba(0,0,0,0.2)" }}>
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <p className="text-[10px] text-emerald-100/70 uppercase tracking-widest font-semibold">Total Kunjungan</p>
-              <p className="text-[9px] text-emerald-200/50 mt-0.5">Sejak website diluncurkan</p>
-            </div>
-            <div className="w-9 h-9 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-300">
-              <Eye size={18} />
-            </div>
-          </div>
-          <div>
-            <p className="text-4xl font-black">{formatNum(total)}</p>
-            <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-semibold">
-              <span>Kunjungan Unik</span>
-            </div>
-          </div>
+      <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Title side */}
+        <div>
+          <h3 className="text-[10px] tracking-widest text-amber-300 uppercase font-bold mb-0.5">Analitik</h3>
+          <h2 className="text-sm font-semibold">Statistik Pengunjung</h2>
         </div>
-        
-        {/* Today Card */}
-        <div className="rounded-xl p-5 border border-white/10 flex flex-col justify-between" style={{ background: "rgba(0,0,0,0.2)" }}>
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <p className="text-[10px] text-emerald-100/70 uppercase tracking-widest font-semibold">Hari Ini</p>
-              <p className="text-[9px] text-emerald-200/50 mt-0.5">Statistik Real-time</p>
-            </div>
-            <div className="w-9 h-9 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-300">
-              <Clock size={18} />
-            </div>
-          </div>
+
+        {/* Stats side (1 row) */}
+        <div className="flex items-center justify-between md:justify-end gap-4 md:gap-8 bg-black/10 rounded-xl p-3 md:bg-transparent md:p-0">
+          
+          {/* Total */}
           <div>
-            <p className="text-4xl font-black text-amber-300">{formatNum(hariIni)}</p>
-            <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-amber-500/20 text-amber-200 text-[10px] font-semibold">
-              <span>Pengunjung Aktif</span>
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <Eye size={12} className="text-emerald-300" />
+              <p className="text-[9px] text-emerald-100/70 uppercase tracking-widest font-semibold">Total</p>
             </div>
+            <p className="text-lg md:text-xl font-bold leading-none">{formatNum(total)}</p>
           </div>
-        </div>
-        
-        {/* Average Card */}
-        <div className="rounded-xl p-5 border border-white/10 flex flex-col justify-between" style={{ background: "rgba(0,0,0,0.2)" }}>
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <p className="text-[10px] text-emerald-100/70 uppercase tracking-widest font-semibold">Rata-rata Harian</p>
-              <p className="text-[9px] text-emerald-200/50 mt-0.5">Performa Kunjungan</p>
-            </div>
-            <div className="w-9 h-9 rounded-lg bg-teal-500/20 flex items-center justify-center text-teal-300">
-              <TrendingUp size={18} />
-            </div>
-          </div>
+          
+          <div className="w-px h-8 bg-white/10"></div>
+          
+          {/* Hari Ini */}
           <div>
-            <p className="text-4xl font-black">{rataRata}</p>
-            <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-1 rounded-full bg-teal-500/20 text-teal-200 text-[10px] font-semibold">
-              <span>Kunjungan / Hari</span>
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <Clock size={12} className="text-amber-300" />
+              <p className="text-[9px] text-amber-100/70 uppercase tracking-widest font-semibold">Hari Ini</p>
             </div>
+            <p className="text-lg md:text-xl font-bold leading-none text-amber-300">{formatNum(hariIni)}</p>
           </div>
+
+          <div className="w-px h-8 bg-white/10 hidden md:block"></div>
+          
+          {/* Average */}
+          <div className="hidden md:block">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <TrendingUp size={12} className="text-teal-300" />
+              <p className="text-[9px] text-teal-100/70 uppercase tracking-widest font-semibold">Rata-rata</p>
+            </div>
+            <p className="text-lg md:text-xl font-bold leading-none text-teal-300">{rataRata}</p>
+          </div>
+
         </div>
-        
       </div>
     </div>
   );
