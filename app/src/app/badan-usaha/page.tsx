@@ -22,8 +22,8 @@ const staticUnits = [
     keyword: "sampah",
     nama: "Bank Sampah Guyub Rukun",
     deskripsi:
-      "Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Sabtu pagi.",
-    chips: ["Aktif", "Setiap Sabtu"],
+      "Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Sabtu/Minggu pagi.",
+    chips: ["Aktif", "Setiap Sabtu/Minggu"],
     btnClass: "btn-accent",
     accent: "var(--gold)",
   },

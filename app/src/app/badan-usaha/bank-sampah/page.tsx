@@ -60,7 +60,7 @@ export default async function BankSampahPage() {
           {/* Status chips */}
           <div className="flex gap-2 flex-wrap fade-up">
             <span className="chip chip-green">✅ Aktif</span>
-            <span className="chip chip-gold">📅 Setiap Sabtu</span>
+            <span className="chip chip-gold">📅 Setiap Sabtu/Minggu</span>
           </div>
 
           {/* Deskripsi */}
@@ -96,7 +96,7 @@ export default async function BankSampahPage() {
             <div className="flex flex-col gap-3">
               {[
                 { icon: "📍", label: "Lokasi Penimbangan", val: infoUsaha?.lokasi || "Poskamling RT, Blok A" },
-                { icon: "🕗", label: "Jadwal Operasional", val: infoUsaha?.jadwal_operasional || "Setiap Sabtu, 08.00–11.00 WIB" },
+                { icon: "🕗", label: "Jadwal Operasional", val: infoUsaha?.jadwal_operasional || "Setiap Sabtu/Minggu, 08.00–11.00 WIB" },
                 { icon: "🗑️", label: "Sampah Diterima", val: "Plastik, Kardus, Kertas, Logam" },
                 { icon: "📞", label: "Kontak", val: infoUsaha?.kontak_whatsapp || "Dewi Rahayu" },
               ].map((info) => (
