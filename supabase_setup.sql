@@ -19,6 +19,7 @@ CREATE TABLE pengurus (
   nama        TEXT NOT NULL,
   jabatan     TEXT NOT NULL,
   foto_url    TEXT,
+  no_telp     TEXT,
   kategori    TEXT NOT NULL DEFAULT 'RT',  -- 'RT', 'BIOFLOK', 'BANK_SAMPAH'
   urutan      INT DEFAULT 99,
   created_at  TIMESTAMPTZ DEFAULT NOW()

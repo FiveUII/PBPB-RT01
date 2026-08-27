@@ -157,6 +157,7 @@ export async function createPengurus(formData: FormData, fotoUrl: string | null)
   const { error } = await supabase.from("pengurus").insert({
     nama: formData.get("nama"),
     jabatan: formData.get("jabatan"),
+    no_telp: formData.get("no_telp"),
     kategori: formData.get("kategori"),
     urutan: parseInt(formData.get("urutan") as string) || 99,
     foto_url: fotoUrl,
@@ -186,6 +187,7 @@ export async function updatePengurus(formData: FormData, fotoUrl: string | null)
   const updateData: any = {
     nama: formData.get("nama"),
     jabatan: formData.get("jabatan"),
+    no_telp: formData.get("no_telp"),
     kategori: formData.get("kategori"),
     urutan: parseInt(formData.get("urutan") as string) || 99,
   };

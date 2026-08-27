@@ -15,6 +15,7 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
     if (formRef.current && initialData) {
       formRef.current.nama.value = initialData.nama;
       formRef.current.jabatan.value = initialData.jabatan;
+      if (initialData.no_telp) formRef.current.no_telp.value = initialData.no_telp;
       formRef.current.kategori.value = initialData.kategori;
       formRef.current.urutan.value = initialData.urutan;
     } else if (formRef.current) {
@@ -95,6 +96,12 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
           <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Jabatan</label>
           <input type="text" name="jabatan" required placeholder="Ketua RT 01" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
         </div>
+        <div>
+          <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>No WhatsApp (Opsional)</label>
+          <input type="text" name="no_telp" placeholder="0812..." className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Kategori</label>
           <select name="kategori" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]">

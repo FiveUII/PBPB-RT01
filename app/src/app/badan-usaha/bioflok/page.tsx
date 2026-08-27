@@ -5,6 +5,7 @@ import { getPengurus, getBadanUsaha } from "@/lib/actions";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import ImageModal from "@/components/ImageModal";
+import PengurusListInteractive from "@/components/PengurusListInteractive";
 
 export const metadata = {
   title: "Ternak Ikan Bioflok | RT 01 Perumahan Harmoni",
@@ -16,15 +17,6 @@ export default async function BioflokPage() {
   const semuaUsaha = await getBadanUsaha();
   const infoUsaha = semuaUsaha.find(u => u.nama_usaha.toLowerCase().includes("bioflok"));
 
-  // Helper to get initials
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .slice(0, 2)
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
 
   const allImages = [infoUsaha?.foto_url, ...(infoUsaha?.galeri_urls || [])].filter(Boolean) as string[];
 
@@ -122,27 +114,7 @@ export default async function BioflokPage() {
           {/* Pengurus */}
           <section className="fade-up fade-up-delay-3">
             <h2 className="section-title">Susunan Pengurus</h2>
-            <div className="grid grid-cols-3 gap-3">
-              {pengurus.length === 0 ? (
-                <p className="col-span-3 text-sm italic" style={{ color: "var(--text-muted)" }}>
-                  Belum ada data pengurus bioflok.
-                </p>
-              ) : (
-                pengurus.map((p) => (
-                  <div key={p.id} className="pengurus-card">
-                    <div className="pengurus-avatar text-base relative">
-                      {p.foto_url ? (
-                        <img src={p.foto_url} alt={p.nama} className="w-full h-full object-cover" />
-                      ) : (
-                        getInitials(p.nama)
-                      )}
-                    </div>
-                    <p className="font-bold text-xs" style={{ color: "var(--text-dark)" }}>{p.nama}</p>
-                    <p className="text-[11px] mt-0.5" style={{ color: "var(--text-muted)" }}>{p.jabatan}</p>
-                  </div>
-                ))
-              )}
-            </div>
+            <PengurusListInteractive pengurus={pengurus} />
           </section>
 
           {/* Lokasi */}

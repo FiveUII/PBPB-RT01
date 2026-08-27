@@ -1,6 +1,7 @@
 import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
 import { MapPin } from "lucide-react";
+import PengurusListInteractive from "@/components/PengurusListInteractive";
 
 import { getPengurus, getProfilRT } from "@/lib/actions";
 
@@ -14,15 +15,7 @@ export default async function ProfilPage() {
   const profilRT = await getProfilRT();
   const misiArray = profilRT?.misi ? profilRT.misi.split("\n").filter((m: string) => m.trim() !== "") : [];
 
-  // Helper to get initials
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .slice(0, 2)
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
+
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: "var(--surface)" }}>
@@ -94,27 +87,7 @@ export default async function ProfilPage() {
         {/* Pengurus */}
         <section className="fade-up fade-up-delay-2">
           <h2 className="section-title">Susunan Pengurus RT</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {pengurus.length === 0 ? (
-              <p className="col-span-2 text-sm italic" style={{ color: "var(--text-muted)" }}>
-                Belum ada data pengurus.
-              </p>
-            ) : (
-              pengurus.map((p) => (
-                <div key={p.id} className="pengurus-card">
-                  <div className="pengurus-avatar relative">
-                    {p.foto_url ? (
-                      <img src={p.foto_url} alt={p.nama} className="w-full h-full object-cover" />
-                    ) : (
-                      getInitials(p.nama)
-                    )}
-                  </div>
-                  <p className="font-bold text-sm" style={{ color: "var(--text-dark)" }}>{p.nama}</p>
-                  <p className="text-xs mt-0.5" style={{ color: "var(--text-muted)" }}>{p.jabatan}</p>
-                </div>
-              ))
-            )}
-          </div>
+          <PengurusListInteractive pengurus={pengurus} />
         </section>
 
         {/* Lokasi */}
