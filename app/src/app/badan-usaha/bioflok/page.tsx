@@ -95,7 +95,7 @@ export default async function BioflokPage() {
             <h2 className="section-title mb-3">Informasi Operasional</h2>
             <div className="flex flex-col gap-3">
               {[
-                { icon: "📍", label: "Lokasi Kolam", val: "Area Fasum RT, Blok F" },
+                { icon: "📍", label: "Lokasi Kolam", val: infoUsaha?.lokasi || "Area Fasum RT, Blok F" },
                 { icon: "🗓️", label: "Jadwal", val: infoUsaha?.jadwal_operasional || "Setiap 60–90 hari" },
                 { icon: "📦", label: "Kapasitas", val: "±500 kg per siklus" },
                 { icon: "📞", label: "Kontak", val: infoUsaha?.kontak_whatsapp || "Hendra Putra" },
@@ -128,7 +128,7 @@ export default async function BioflokPage() {
             <div className="p-5">
               <h2 className="section-title mb-1">Lokasi Ternak Bioflok</h2>
               <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>
-                Area Fasum RT, Blok F
+                {infoUsaha?.lokasi || "Area Fasum RT, Blok F"}
               </p>
               <a
                 href="https://maps.app.goo.gl/vaw3FppLZii7Nf6H6"

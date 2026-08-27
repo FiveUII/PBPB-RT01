@@ -95,7 +95,7 @@ export default async function BankSampahPage() {
             <h2 className="section-title mb-3">Informasi Operasional</h2>
             <div className="flex flex-col gap-3">
               {[
-                { icon: "📍", label: "Lokasi Penimbangan", val: "Poskamling RT, Blok A" },
+                { icon: "📍", label: "Lokasi Penimbangan", val: infoUsaha?.lokasi || "Poskamling RT, Blok A" },
                 { icon: "🕗", label: "Jadwal Operasional", val: infoUsaha?.jadwal_operasional || "Setiap Sabtu, 08.00–11.00 WIB" },
                 { icon: "🗑️", label: "Sampah Diterima", val: "Plastik, Kardus, Kertas, Logam" },
                 { icon: "📞", label: "Kontak", val: infoUsaha?.kontak_whatsapp || "Dewi Rahayu" },
@@ -128,7 +128,7 @@ export default async function BankSampahPage() {
             <div className="p-5">
               <h2 className="section-title mb-1">Lokasi Bank Sampah</h2>
               <p className="text-sm mb-4" style={{ color: "var(--text-muted)" }}>
-                Poskamling RT, Blok A
+                {infoUsaha?.lokasi || "Poskamling RT, Blok A"}
               </p>
               <a
                 href="https://maps.app.goo.gl/4Ur18HBwmdFYMzzo7"

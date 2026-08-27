@@ -229,6 +229,7 @@ export async function updateBadanUsaha(formData: FormData, fotoUrl: string | nul
     deskripsi: formData.get("deskripsi"),
     jadwal_operasional: formData.get("jadwal_operasional"),
     kontak_whatsapp: formData.get("kontak_whatsapp"),
+    lokasi: formData.get("lokasi") || null,
     label_tag: formData.get("label_tag") || null,
     updated_at: new Date().toISOString(),
   };

@@ -94,6 +94,11 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
         <textarea name="deskripsi" defaultValue={usaha.deskripsi || ""} required rows={3} className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]"></textarea>
       </div>
       
+      <div>
+        <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Lokasi Usaha</label>
+        <input type="text" name="lokasi" defaultValue={usaha.lokasi || ""} placeholder="Contoh: Area Fasum RT, Blok F" className="w-full rounded-lg px-3 py-2 text-sm border outline-none focus:border-[var(--green-800)]" />
+      </div>
+      
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>Jadwal Operasional</label>
