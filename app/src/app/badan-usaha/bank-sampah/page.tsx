@@ -60,7 +60,7 @@ export default async function BankSampahPage() {
           {/* Status chips */}
           <div className="flex gap-2 flex-wrap fade-up">
             <span className="chip chip-green">✅ Aktif</span>
-            <span className="chip chip-gold">📅 {infoUsaha?.label_tag || "Setiap Sabtu"}</span>
+            <span className="chip chip-gold">📅 Setiap Sabtu</span>
           </div>
 
           {/* Deskripsi */}

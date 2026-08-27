@@ -60,7 +60,7 @@ export default async function BioflokPage() {
           {/* Status chips */}
           <div className="flex gap-2 fade-up">
             <span className="chip chip-green">✅ Aktif</span>
-            <span className="chip chip-green">🐟 {infoUsaha?.label_tag || "Menjual Ikan Nila"}</span>
+            <span className="chip chip-green">🐟 Menjual Ikan Nila</span>
           </div>
 
           {/* Deskripsi */}
