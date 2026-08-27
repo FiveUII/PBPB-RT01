@@ -11,8 +11,8 @@ const staticUnits = [
     keyword: "bioflok",
     nama: "Ternak Ikan Bioflok",
     deskripsi:
-      "Budidaya ikan lele dan nila menggunakan teknologi bioflok hemat air dan lahan.",
-    chips: ["Aktif", "Ikan Lele & Nila"],
+      "Budidaya ikan nila menggunakan teknologi bioflok hemat air dan lahan.",
+    chips: ["Aktif", "Menjual Ikan Nila"],
     btnClass: "btn-primary",
     accent: "var(--green-800)",
   },
@@ -22,8 +22,8 @@ const staticUnits = [
     keyword: "sampah",
     nama: "Bank Sampah Guyub Rukun",
     deskripsi:
-      "Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Minggu pagi.",
-    chips: ["Aktif", "Setiap Minggu"],
+      "Tukarkan sampah anorganik menjadi saldo tabungan atau sembako setiap Sabtu pagi.",
+    chips: ["Aktif", "Setiap Sabtu"],
     btnClass: "btn-accent",
     accent: "var(--gold)",
   },

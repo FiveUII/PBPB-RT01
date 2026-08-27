@@ -60,14 +60,14 @@ export default async function BioflokPage() {
           {/* Status chips */}
           <div className="flex gap-2 fade-up">
             <span className="chip chip-green">✅ Aktif</span>
-            <span className="chip chip-green">🐟 Ikan Lele & Nila</span>
+            <span className="chip chip-green">🐟 Menjual Ikan Nila</span>
           </div>
 
           {/* Deskripsi */}
           <section className="card p-5 fade-up fade-up-delay-1">
             <h2 className="section-title mb-3">Tentang Usaha</h2>
             <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-              {infoUsaha?.deskripsi || `Unit usaha Ternak Ikan Bioflok RT 01 menggunakan teknologi bioflok — sistem budidaya ikan intensif yang hemat air dan lahan. Ikan yang dibudidayakan meliputi ikan lele dan nila dengan siklus panen setiap 60–90 hari.`}
+              {infoUsaha?.deskripsi || `Unit usaha Ternak Ikan Bioflok RT 01 menggunakan teknologi bioflok — sistem budidaya ikan intensif yang hemat air dan lahan. Ikan yang dibudidayakan meliputi ikan nila dengan siklus panen setiap 60–90 hari.`}
             </p>
           </section>
           
