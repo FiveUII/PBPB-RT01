@@ -2,6 +2,7 @@ import Topbar from "@/components/Topbar";
 import Footer from "@/components/Footer";
 import { MapPin } from "lucide-react";
 import PengurusListInteractive from "@/components/PengurusListInteractive";
+import ProfilGalleryClient from "./ProfilGalleryClient";
 
 import { getPengurus, getProfilRT } from "@/lib/actions";
 
@@ -31,16 +32,7 @@ export default async function ProfilPage() {
         </section>
         
         {/* Gallery Slider */}
-        {profilRT?.galeri_urls && profilRT.galeri_urls.length > 0 && (
-          <section className="fade-up fade-up-delay-1">
-             <h2 className="section-title mb-3 px-1">Galeri Lingkungan</h2>
-             <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
-               {profilRT.galeri_urls.map((url: string, idx: number) => (
-                 <img key={idx} src={url} alt={`Galeri ${idx}`} className="w-40 h-40 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100" />
-               ))}
-             </div>
-          </section>
-        )}
+        <ProfilGalleryClient galeriUrls={profilRT?.galeri_urls || []} />
 
         {/* Visi Misi */}
         <section className="fade-up fade-up-delay-1">
