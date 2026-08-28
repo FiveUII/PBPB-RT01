@@ -26,8 +26,8 @@ export default function InstallPWAButton() {
       alert(
         "Browser Anda tidak mendukung instalasi otomatis atau aplikasi sudah terpasang.\n\n" +
         "Cara manual:\n" +
-        "- iOS (Safari): Ketuk ikon 'Share' (Bagikan) di bawah, lalu pilih 'Add to Home Screen' (Tambah ke Layar Utama).\n" +
-        "- Android (Chrome): Ketuk ikon menu (tiga titik) di atas, lalu pilih 'Add to Home screen' (Tambahkan ke layar utama)."
+        "- Android (Brave / Chrome): Ketuk ikon menu (tiga titik), lalu pilih 'Install app' atau 'Tambahkan ke layar utama'.\n" +
+        "- iOS (Safari): Ketuk ikon 'Share' (Bagikan) di bawah, lalu pilih 'Add to Home Screen' (Tambah ke Layar Utama)."
       );
       return;
     }
