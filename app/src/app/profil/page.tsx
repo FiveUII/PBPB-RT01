@@ -96,7 +96,7 @@ export default async function ProfilPage() {
               Perumahan Bukit Pinang Bahari, Samarinda
             </p>
             <a
-              href="https://maps.app.goo.gl/odifcSqdjg7RJHLX7"
+              href="https://maps.app.goo.gl/K8SQSLTxtFdxwntg8"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-outline w-full text-center flex justify-center items-center gap-2"
