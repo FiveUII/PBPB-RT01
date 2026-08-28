@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { getStatistikKunjungan } from "@/lib/actions";
 import StatistikWidget from "@/components/StatistikWidget";
 
-import { Calendar, BellRing, Users, Briefcase } from "lucide-react";
+import { Calendar, Users, Briefcase } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Dashboard Admin | RT 01 Perumahan Harmoni",
@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 
 const menuItems = [
   { href: "/admin/dashboard/kegiatan", icon: <Calendar size={24} />, label: "Kelola Kegiatan", desc: "Tambah & edit dokumentasi acara", color: "var(--green-800)" },
-  { href: "/admin/dashboard/pengumuman", icon: <BellRing size={24} />, label: "Buat Pengumuman", desc: "Kirim pengumuman ke warga", color: "var(--gold)" },
-  { href: "/admin/dashboard/pengurus", icon: <Users size={24} />, label: "Kelola Pengurus", desc: "Atur susunan pengurus RT", color: "var(--green-700)" },
+  { href: "/admin/dashboard/pengurus", icon: <Users size={24} />, label: "Kelola Profil RT", desc: "Atur profil RT & susunan pengurus", color: "var(--green-700)" },
   { href: "/admin/dashboard/usaha", icon: <Briefcase size={24} />, label: "Info Badan Usaha", desc: "Edit info unit usaha RT", color: "var(--green-900)" },
 ];
 
