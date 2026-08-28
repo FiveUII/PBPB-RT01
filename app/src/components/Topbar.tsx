@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 const publicNavItems = [
   { href: "/profil",       label: "Profil RT" },
   { href: "/kegiatan",     label: "Kegiatan" },
-  { href: "/pengumuman",   label: "Pengumuman" },
   { href: "/badan-usaha",  label: "Badan Usaha" },
 ];
 
@@ -15,7 +14,6 @@ const adminNavItems = [
   { href: "/admin/dashboard",            label: "Dashboard Admin" },
   { href: "/admin/dashboard/pengurus",   label: "Kelola Profil & Pengurus" },
   { href: "/admin/dashboard/kegiatan",   label: "Kelola Kegiatan" },
-  { href: "/admin/dashboard/pengumuman", label: "Kelola Pengumuman" },
   { href: "/admin/dashboard/usaha",      label: "Kelola Badan Usaha" },
 ];
 

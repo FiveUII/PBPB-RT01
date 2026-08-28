@@ -1,8 +1,7 @@
 import Link from "next/link";
 
 import Footer from "@/components/Footer";
-import { getPengumuman } from "@/lib/actions";
-import { Megaphone, Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
+import { Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
 
 const navCards = [
   {
@@ -29,8 +28,6 @@ const navCards = [
 ];
 
 export default async function HomePage() {
-  const pengumumanList = await getPengumuman();
-  const latestPengumuman = pengumumanList[0];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f6f8]">
@@ -81,28 +78,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Cards Section (Inside Banner) */}
         <div className="relative z-20 w-full max-w-5xl mx-auto px-4 pb-24 md:pb-32 mt-auto fade-up fade-up-delay-1 flex flex-col gap-4">
-          
-          {/* PENGUMUMAN BANNER */}
-          {latestPengumuman && (
-            <Link href="/pengumuman" className="announcement-card bg-white/90 backdrop-blur-md block no-underline text-left mx-auto w-full max-w-3xl hover:shadow-[0_12px_32px_rgba(27,67,50,0.14)] transition-all">
-              <div className="p-2 rounded-full bg-red-50 text-red-600 flex-shrink-0">
-                <Megaphone size={20} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold text-sm" style={{ color: "var(--text-dark)" }}>
-                  Pengumuman Terbaru
-                </p>
-                <p className="text-xs truncate" style={{ color: "var(--text-muted)" }}>
-                  {latestPengumuman.judul} — {new Date(latestPengumuman.tanggal).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
-                </p>
-              </div>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0" style={{ color: "var(--text-muted)" }}>
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </Link>
-          )}
 
           {/* NAV CARDS (Grid for Desktop) */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left mt-2">
