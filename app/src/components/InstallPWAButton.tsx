@@ -22,7 +22,15 @@ export default function InstallPWAButton() {
   }, []);
 
   const handleInstallClick = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert(
+        "Browser Anda tidak mendukung instalasi otomatis atau aplikasi sudah terpasang.\n\n" +
+        "Cara manual:\n" +
+        "- iOS (Safari): Ketuk ikon 'Share' (Bagikan) di bawah, lalu pilih 'Add to Home Screen' (Tambah ke Layar Utama).\n" +
+        "- Android (Chrome): Ketuk ikon menu (tiga titik) di atas, lalu pilih 'Add to Home screen' (Tambahkan ke layar utama)."
+      );
+      return;
+    }
     
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -32,8 +40,6 @@ export default function InstallPWAButton() {
       setIsInstallable(false);
     }
   };
-
-  if (!isInstallable) return null;
 
   return (
     <button
