@@ -24,7 +24,6 @@ export default function Footer() {
             <ul className="flex flex-col gap-2 text-sm">
               <li><Link href="/profil" className="hover:text-white transition-colors">Profil RT</Link></li>
               <li><Link href="/kegiatan" className="hover:text-white transition-colors">Kegiatan Warga</Link></li>
-              <li><Link href="/pengumuman" className="hover:text-white transition-colors">Pengumuman</Link></li>
               <li><Link href="/badan-usaha" className="hover:text-white transition-colors">Badan Usaha (BUMRT)</Link></li>
             </ul>
           </div>
@@ -33,9 +32,9 @@ export default function Footer() {
           <div>
             <h3 className="font-bold text-base text-white mb-3">Kontak & Lokasi</h3>
             <ul className="flex flex-col gap-2 text-sm">
-              <li>Jalan Bukit Pinang Raya Blok A No. 1</li>
-              <li>Samarinda, Kalimantan Timur</li>
-              <li>Email: rt01.bukitpinang@example.com</li>
+              <li>Perumahan Bukit Pinang Bahari, Blok A5 No 22</li>
+              <li>Kelurahan Gunung Panjang, Kecamatan Samarinda Seberang</li>
+              <li>WhatsApp: 0812-5302-7456</li>
             </ul>
           </div>
 
