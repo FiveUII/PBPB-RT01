@@ -5,13 +5,23 @@ import { X, Calendar } from "lucide-react";
 
 export default function KegiatanClient({ kegiatan }: { kegiatan: any[] }) {
   const [selectedKegiatan, setSelectedKegiatan] = useState<any | null>(null);
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxData, setLightboxData] = useState<{ urls: string[], index: number } | null>(null);
 
   // Close modals when clicking outside
   const handleLightboxClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      setLightboxImage(null);
+      setLightboxData(null);
     }
+  };
+
+  const openLightbox = (item: any, clickedUrl: string) => {
+    const urls = [];
+    if (item.foto_url) urls.push(item.foto_url);
+    if (item.galeri_urls && item.galeri_urls.length > 0) {
+      urls.push(...item.galeri_urls);
+    }
+    const index = urls.indexOf(clickedUrl);
+    setLightboxData({ urls, index: index !== -1 ? index : 0 });
   };
 
   const handleModalClick = (e: React.MouseEvent) => {
@@ -97,7 +107,7 @@ export default function KegiatanClient({ kegiatan }: { kegiatan: any[] }) {
                   src={selectedKegiatan.foto_url} 
                   alt={selectedKegiatan.judul} 
                   className="w-full h-full object-cover cursor-pointer"
-                  onClick={() => setLightboxImage(selectedKegiatan.foto_url)}
+                  onClick={() => openLightbox(selectedKegiatan, selectedKegiatan.foto_url)}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-6xl bg-gray-100">
@@ -130,7 +140,7 @@ export default function KegiatanClient({ kegiatan }: { kegiatan: any[] }) {
                       <div 
                         key={idx}
                         className="aspect-square rounded-xl overflow-hidden cursor-pointer hover:opacity-90 transition-opacity border border-gray-100 shadow-sm"
-                        onClick={() => setLightboxImage(gUrl)}
+                        onClick={() => openLightbox(selectedKegiatan, gUrl)}
                       >
                         <img 
                           src={gUrl} 
@@ -148,23 +158,48 @@ export default function KegiatanClient({ kegiatan }: { kegiatan: any[] }) {
       )}
 
       {/* Fullscreen Lightbox */}
-      {lightboxImage && (
+      {lightboxData && (
         <div 
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 p-4"
           onClick={handleLightboxClick}
         >
           <button 
-            onClick={() => setLightboxImage(null)}
-            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors p-2"
+            onClick={() => setLightboxData(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors p-2 z-50"
           >
             <X size={32} />
           </button>
           
+          {lightboxData.urls.length > 1 && (
+            <button 
+              onClick={(e) => { e.stopPropagation(); setLightboxData({ ...lightboxData, index: (lightboxData.index - 1 + lightboxData.urls.length) % lightboxData.urls.length }); }}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors p-2 z-50 bg-black/50 rounded-full"
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+          )}
+
           <img 
-            src={lightboxImage} 
+            key={lightboxData.index}
+            src={lightboxData.urls[lightboxData.index]} 
             alt="Preview Besar" 
             className="max-w-full max-h-[90vh] object-contain rounded-md animate-in fade-in zoom-in-95 duration-200" 
           />
+
+          {lightboxData.urls.length > 1 && (
+            <button 
+              onClick={(e) => { e.stopPropagation(); setLightboxData({ ...lightboxData, index: (lightboxData.index + 1) % lightboxData.urls.length }); }}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 transition-colors p-2 z-50 bg-black/50 rounded-full"
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          )}
+          
+          {lightboxData.urls.length > 1 && (
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-sm font-medium tracking-widest bg-black/50 px-4 py-2 rounded-full">
+              {lightboxData.index + 1} / {lightboxData.urls.length}
+            </div>
+          )}
         </div>
       )}
     </>
