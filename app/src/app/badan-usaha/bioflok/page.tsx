@@ -8,8 +8,8 @@ import ImageModal from "@/components/ImageModal";
 import PengurusListInteractive from "@/components/PengurusListInteractive";
 
 export const metadata = {
-  title: "Ternak Ikan Bioflok | RT 01 Perumahan Harmoni",
-  description: "Informasi unit usaha Ternak Ikan Bioflok RT 01 Perumahan Harmoni.",
+  title: "Ternak Ikan Bioflok | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Informasi unit usaha Ternak Ikan Bioflok RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default async function BioflokPage() {

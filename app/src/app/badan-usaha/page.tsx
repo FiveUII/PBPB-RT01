@@ -56,7 +56,7 @@ export default async function BadanUsahaPage() {
         <section className="card p-5 mb-6 fade-up">
           <h2 className="section-title mb-2">Unit Usaha Warga RT 01</h2>
           <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
-            RT 01 Perumahan Harmoni mengelola dua unit usaha produktif untuk meningkatkan
+            RT 01 Perumahan Bukit Pinang Bahari mengelola dua unit usaha produktif untuk meningkatkan
             kesejahteraan dan kemandirian ekonomi warga.
           </p>
           <div className="flex gap-2 mt-3">

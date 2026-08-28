@@ -8,8 +8,8 @@ import ImageModal from "@/components/ImageModal";
 import PengurusListInteractive from "@/components/PengurusListInteractive";
 
 export const metadata = {
-  title: "Bank Sampah | RT 01 Perumahan Harmoni",
-  description: "Informasi unit usaha Bank Sampah Guyub Rukun RT 01 Perumahan Harmoni.",
+  title: "Bank Sampah | RT 01 Perumahan Bukit Pinang Bahari",
+  description: "Informasi unit usaha Bank Sampah Guyub Rukun RT 01 Perumahan Bukit Pinang Bahari.",
 };
 
 export default async function BankSampahPage() {

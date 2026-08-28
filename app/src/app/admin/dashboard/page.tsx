@@ -9,7 +9,7 @@ import { Calendar, Users, Briefcase } from "lucide-react";
 import InstallPWAButton from "@/components/InstallPWAButton";
 
 export const metadata: Metadata = {
-  title: "Dashboard Admin | RT 01 Perumahan Harmoni",
+  title: "Dashboard Admin | RT 01 Perumahan Bukit Pinang Bahari",
 };
 
 const menuItems = [

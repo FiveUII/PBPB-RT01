@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LoginForm from "./LoginForm";
 
 export const metadata: Metadata = {
-  title: "Login Admin | RT 01 Perumahan Harmoni",
+  title: "Login Admin | RT 01 Perumahan Bukit Pinang Bahari",
 };
 
 export default function AdminLoginPage() {
