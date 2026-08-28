@@ -5,8 +5,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getStatistikKunjungan } from "@/lib/actions";
 import StatistikWidget from "@/components/StatistikWidget";
-
 import { Calendar, Users, Briefcase } from "lucide-react";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 export const metadata: Metadata = {
   title: "Dashboard Admin | RT 01 Perumahan Harmoni",
@@ -98,6 +98,10 @@ export default async function DashboardPage() {
             Pilih menu di atas untuk mengelola konten website. Setiap perubahan akan langsung
             tampil di halaman publik.
           </p>
+        </div>
+
+        <div className="fade-up fade-up-delay-3">
+          <InstallPWAButton />
         </div>
       </main>
     </div>
