@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import Footer from "@/components/Footer";
 import { getPengumuman } from "@/lib/actions";
-import { Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
+import { Megaphone, Home, Calendar, Briefcase, ChevronRight } from "lucide-react";
 
 const navCards = [
   {
@@ -87,7 +87,9 @@ export default async function HomePage() {
           {/* PENGUMUMAN BANNER */}
           {latestPengumuman && (
             <Link href="/pengumuman" className="announcement-card bg-white/90 backdrop-blur-md block no-underline text-left mx-auto w-full max-w-3xl hover:shadow-[0_12px_32px_rgba(27,67,50,0.14)] transition-all">
-              <span className="text-2xl flex-shrink-0">📢</span>
+              <div className="p-2 rounded-full bg-red-50 text-red-600 flex-shrink-0">
+                <Megaphone size={20} />
+              </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-sm" style={{ color: "var(--text-dark)" }}>
                   Pengumuman Terbaru
