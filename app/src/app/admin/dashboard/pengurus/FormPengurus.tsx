@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { createPengurus, updatePengurus, uploadFile } from "@/lib/actions";
+import { compressImage } from "@/lib/compressImage";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -68,7 +69,11 @@ export default function FormPengurus({ initialData }: { initialData?: any }) {
       
       let fotoUrl = null;
       if (file) {
-        fotoUrl = await uploadFile(file, "pengurus");
+        const compressedFile = await compressImage(file);
+        const fileData = new FormData();
+        fileData.append("file", compressedFile);
+        fileData.append("folder", "pengurus");
+        fotoUrl = await uploadFile(fileData);
       }
       
       if (initialData) {

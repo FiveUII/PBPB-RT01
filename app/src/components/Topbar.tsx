@@ -2,12 +2,21 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Home } from "lucide-react";
+import { usePathname } from "next/navigation";
 
-const navItems = [
+const publicNavItems = [
   { href: "/profil",       label: "Profil RT" },
   { href: "/kegiatan",     label: "Kegiatan" },
   { href: "/pengumuman",   label: "Pengumuman" },
   { href: "/badan-usaha",  label: "Badan Usaha" },
+];
+
+const adminNavItems = [
+  { href: "/admin/dashboard",            label: "Dashboard Admin" },
+  { href: "/admin/dashboard/pengurus",   label: "Kelola Profil & Pengurus" },
+  { href: "/admin/dashboard/kegiatan",   label: "Kelola Kegiatan" },
+  { href: "/admin/dashboard/pengumuman", label: "Kelola Pengumuman" },
+  { href: "/admin/dashboard/usaha",      label: "Kelola Badan Usaha" },
 ];
 
 export default function Topbar({
@@ -20,6 +29,9 @@ export default function Topbar({
   backHref?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
+  const activeNavItems = isAdmin ? adminNavItems : publicNavItems;
 
   return (
     <>
@@ -65,7 +77,7 @@ export default function Topbar({
           className="fixed top-[52px] left-0 right-0 z-40 shadow-lg"
           style={{ background: "var(--green-900)" }}
         >
-          {navItems.map((item) => (
+          {activeNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}

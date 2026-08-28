@@ -44,7 +44,7 @@ export default function LoginForm() {
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="pengurus@rt01harmoni.com"
+          placeholder="pengurus@rt01.com"
           required
           className="w-full rounded-xl px-4 py-3 text-sm border outline-none transition-colors"
           style={{ background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-dark)" }}

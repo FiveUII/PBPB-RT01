@@ -248,7 +248,9 @@ export async function updateBadanUsaha(formData: FormData, fotoUrl: string | nul
 // ==========================================
 // STORAGE ACTIONS
 // ==========================================
-export async function uploadFile(file: File, folder: string): Promise<string | null> {
+export async function uploadFile(formData: FormData): Promise<string | null> {
+  const file = formData.get("file") as File;
+  const folder = formData.get("folder") as string;
   if (!file || file.size === 0) return null;
 
   const supabase = await createClient();
@@ -266,6 +268,35 @@ export async function uploadFile(file: File, folder: string): Promise<string | n
     .getPublicUrl(fileName);
 
   return publicUrlData.publicUrl;
+}
+
+export async function uploadMultipleFiles(formData: FormData): Promise<string[]> {
+  const files = formData.getAll("files") as File[];
+  const folder = formData.get("folder") as string;
+  if (!files || files.length === 0) return [];
+
+  const supabase = await createClient();
+  const urls: string[] = [];
+
+  for (const file of files) {
+    if (!file || file.size === 0) continue;
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${folder}/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+    const { error } = await supabase.storage
+      .from("public-assets")
+      .upload(fileName, file);
+
+    if (error) throw new Error(error.message);
+
+    const { data: publicUrlData } = supabase.storage
+      .from("public-assets")
+      .getPublicUrl(fileName);
+
+    urls.push(publicUrlData.publicUrl);
+  }
+
+  return urls;
 }
 
 // ==========================================

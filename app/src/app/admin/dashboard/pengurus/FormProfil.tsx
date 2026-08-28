@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { updateProfilRT, uploadFile } from "@/lib/actions";
+import { updateProfilRT, uploadFile, uploadMultipleFiles } from "@/lib/actions";
+import { compressImage } from "@/lib/compressImage";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -72,7 +73,13 @@ export default function FormProfil({ profil }: { profil: any }) {
     try {
       let uploadedUrls: string[] = [];
       if (newGalleryFiles.length > 0) {
-        uploadedUrls = await Promise.all(newGalleryFiles.map(f => uploadFile(f, "profil"))) as string[];
+        const fd = new FormData();
+        fd.append("folder", "profil");
+        for (const f of newGalleryFiles) {
+          const compressedFile = await compressImage(f);
+          fd.append("files", compressedFile);
+        }
+        uploadedUrls = await uploadMultipleFiles(fd);
       }
       
       const finalGaleriUrls = [...existingGaleriUrls, ...uploadedUrls];
@@ -155,6 +162,10 @@ export default function FormProfil({ profil }: { profil: any }) {
               onChange={(e) => {
                 if (e.target.files) {
                   const files = Array.from(e.target.files);
+                  if (existingGaleriUrls.length + newGalleryFiles.length + files.length > 5) {
+                    Swal.fire("Batas Maksimal", "Maksimal total 5 foto galeri yang diizinkan.", "warning");
+                    return;
+                  }
                   setNewGalleryFiles(prev => [...prev, ...files]);
                   const urls = files.map(f => URL.createObjectURL(f));
                   setNewGalleryPreviewUrls(prev => [...prev, ...urls]);

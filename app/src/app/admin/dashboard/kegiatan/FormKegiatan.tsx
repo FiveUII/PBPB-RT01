@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { createKegiatan, updateKegiatan, uploadFile } from "@/lib/actions";
+import { createKegiatan, updateKegiatan, uploadFile, uploadMultipleFiles } from "@/lib/actions";
+import { compressImage } from "@/lib/compressImage";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -75,14 +76,24 @@ export default function FormKegiatan({ initialData }: { initialData?: any }) {
       
       let fotoUrl = null;
       if (file) {
-        fotoUrl = await uploadFile(file, "kegiatan");
+        const compressedFile = await compressImage(file);
+        const fileData = new FormData();
+        fileData.append("file", compressedFile);
+        fileData.append("folder", "kegiatan");
+        fotoUrl = await uploadFile(fileData);
       }
       
       let uploadedUrls: string[] = [];
       if (newGalleryFiles.length > 0) {
-        uploadedUrls = await Promise.all(newGalleryFiles.map(f => uploadFile(f, "kegiatan"))) as string[];
+        const fd = new FormData();
+        fd.append("folder", "kegiatan");
+        for (const f of newGalleryFiles) {
+          const compressedFile = await compressImage(f);
+          fd.append("files", compressedFile);
+        }
+        uploadedUrls = await uploadMultipleFiles(fd);
       }
-      
+
       const finalGaleriUrls = [...existingGaleriUrls, ...uploadedUrls];
       
       if (initialData) {
@@ -161,6 +172,10 @@ export default function FormKegiatan({ initialData }: { initialData?: any }) {
               onChange={(e) => {
                 if (e.target.files) {
                   const files = Array.from(e.target.files);
+                  if (existingGaleriUrls.length + newGalleryFiles.length + files.length > 5) {
+                    Swal.fire("Batas Maksimal", "Maksimal total 5 foto galeri yang diizinkan.", "warning");
+                    return;
+                  }
                   setNewGalleryFiles(prev => [...prev, ...files]);
                   const urls = files.map(f => URL.createObjectURL(f));
                   setNewGalleryPreviewUrls(prev => [...prev, ...urls]);

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { updateBadanUsaha, uploadFile } from "@/lib/actions";
+import { updateBadanUsaha, uploadFile, uploadMultipleFiles } from "@/lib/actions";
+import { compressImage } from "@/lib/compressImage";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 
@@ -62,12 +63,22 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
     try {
       let fotoUrl = null;
       if (file) {
-        fotoUrl = await uploadFile(file, "badan_usaha");
+        const compressedFile = await compressImage(file);
+        const fileData = new FormData();
+        fileData.append("file", compressedFile);
+        fileData.append("folder", "badan_usaha");
+        fotoUrl = await uploadFile(fileData);
       }
       
       let uploadedUrls: string[] = [];
       if (newGalleryFiles.length > 0) {
-        uploadedUrls = await Promise.all(newGalleryFiles.map(f => uploadFile(f, "badan_usaha"))) as string[];
+        const fd = new FormData();
+        fd.append("folder", "badan_usaha");
+        for (const f of newGalleryFiles) {
+          const compressedFile = await compressImage(f);
+          fd.append("files", compressedFile);
+        }
+        uploadedUrls = await uploadMultipleFiles(fd);
       }
       
       const finalGaleriUrls = [...existingGaleriUrls, ...uploadedUrls];
@@ -151,6 +162,10 @@ export default function FormUsaha({ usaha }: { usaha: any }) {
               onChange={(e) => {
                 if (e.target.files) {
                   const files = Array.from(e.target.files);
+                  if (existingGaleriUrls.length + newGalleryFiles.length + files.length > 5) {
+                    Swal.fire("Batas Maksimal", "Maksimal total 5 foto galeri yang diizinkan.", "warning");
+                    return;
+                  }
                   setNewGalleryFiles(prev => [...prev, ...files]);
                   const urls = files.map(f => URL.createObjectURL(f));
                   setNewGalleryPreviewUrls(prev => [...prev, ...urls]);
