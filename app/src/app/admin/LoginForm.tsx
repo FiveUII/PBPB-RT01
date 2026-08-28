@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import InstallPWAButton from "@/components/InstallPWAButton";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -78,6 +79,8 @@ export default function LoginForm() {
       >
         {loading ? "Memproses..." : "Masuk ke Dashboard"}
       </button>
+
+      <InstallPWAButton />
     </form>
   );
 }
