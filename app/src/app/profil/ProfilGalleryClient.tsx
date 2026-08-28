@@ -60,11 +60,11 @@ export default function ProfilGalleryClient({ galeriUrls }: { galeriUrls: string
           </div>
 
           {/* Main Image Area */}
-          <div className="flex-1 relative flex items-center justify-center p-4">
+          <div className="flex-1 min-h-0 relative flex items-center justify-center p-4">
             <img 
               src={galeriUrls[lightboxIndex]} 
               alt={`Galeri ${lightboxIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
+              className="max-w-full max-h-[90vh] object-contain rounded-md"
               onClick={(e) => e.stopPropagation()} // Prevent click from closing
             />
           </div>
