@@ -3,6 +3,14 @@
 import { createClient } from "./supabase/server";
 import { revalidatePath } from "next/cache";
 
+async function ensureAuth() {
+  const supabase = await createClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error || !user) {
+    throw new Error("Akses ditolak. Tindakan ini memerlukan otentikasi admin yang sah.");
+  }
+}
+
 
 // ==========================================
 // KEGIATAN ACTIONS
@@ -19,6 +27,7 @@ export async function getKegiatan() {
 }
 
 export async function createKegiatan(formData: FormData, fotoUrl: string | null, galeriUrls: string[] = []) {
+  await ensureAuth();
   const supabase = await createClient();
   const { error } = await supabase.from("kegiatan").insert({
     judul: formData.get("judul"),
@@ -34,6 +43,7 @@ export async function createKegiatan(formData: FormData, fotoUrl: string | null,
 }
 
 export async function deleteKegiatan(id: string) {
+  await ensureAuth();
   const supabase = await createClient();
   const { error } = await supabase.from("kegiatan").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -42,6 +52,7 @@ export async function deleteKegiatan(id: string) {
 }
 
 export async function updateKegiatan(formData: FormData, fotoUrl: string | null, galeriUrls: string[] | null = null) {
+  await ensureAuth();
   const supabase = await createClient();
   const id = formData.get("id") as string;
   
@@ -76,6 +87,7 @@ export async function getPengurus(kategori: string = "RT") {
 }
 
 export async function createPengurus(formData: FormData, fotoUrl: string | null) {
+  await ensureAuth();
   const supabase = await createClient();
   const { error } = await supabase.from("pengurus").insert({
     nama: formData.get("nama"),
@@ -94,6 +106,7 @@ export async function createPengurus(formData: FormData, fotoUrl: string | null)
 }
 
 export async function deletePengurus(id: string) {
+  await ensureAuth();
   const supabase = await createClient();
   const { error } = await supabase.from("pengurus").delete().eq("id", id);
   if (error) throw new Error(error.message);
@@ -104,6 +117,7 @@ export async function deletePengurus(id: string) {
 }
 
 export async function updatePengurus(formData: FormData, fotoUrl: string | null) {
+  await ensureAuth();
   const supabase = await createClient();
   const id = formData.get("id") as string;
   
@@ -144,6 +158,7 @@ export async function getBadanUsaha() {
 }
 
 export async function updateBadanUsaha(formData: FormData, fotoUrl: string | null = null, galeriUrls: string[] | null = null) {
+  await ensureAuth();
   const supabase = await createClient();
   const id = formData.get("id") as string;
   
@@ -172,6 +187,7 @@ export async function updateBadanUsaha(formData: FormData, fotoUrl: string | nul
 // STORAGE ACTIONS
 // ==========================================
 export async function uploadFile(formData: FormData): Promise<string | null> {
+  await ensureAuth();
   const file = formData.get("file") as File;
   const folder = formData.get("folder") as string;
   if (!file || file.size === 0) return null;
@@ -194,6 +210,7 @@ export async function uploadFile(formData: FormData): Promise<string | null> {
 }
 
 export async function uploadMultipleFiles(formData: FormData): Promise<string[]> {
+  await ensureAuth();
   const files = formData.getAll("files") as File[];
   const folder = formData.get("folder") as string;
   if (!files || files.length === 0) return [];
@@ -241,6 +258,7 @@ export async function getProfilRT() {
 }
 
 export async function updateProfilRT(formData: FormData, galeriUrls: string[] | null = null) {
+  await ensureAuth();
   const supabase = await createClient();
   
   const updateData: any = {
