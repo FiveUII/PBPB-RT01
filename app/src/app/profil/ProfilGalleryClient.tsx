@@ -23,24 +23,27 @@ export default function ProfilGalleryClient({ galeriUrls }: { galeriUrls: string
   };
 
   return (
-    <section className="fade-up fade-up-delay-1">
-      <h2 className="section-title mb-3 px-1">Galeri</h2>
-      <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
-        {galeriUrls.map((url: string, idx: number) => (
-          <img 
-            key={idx} 
-            src={url} 
-            alt={`Galeri ${idx + 1}`} 
-            onClick={() => setLightboxIndex(idx)}
-            className="w-40 h-40 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100 cursor-pointer hover:opacity-90 transition-opacity" 
-          />
-        ))}
-      </div>
+    <>
+      <section className="fade-up fade-up-delay-1">
+        <h2 className="section-title mb-3 px-1">Galeri</h2>
+        <div className="flex gap-3 overflow-x-auto pb-2 px-1 snap-x hide-scrollbar">
+          {galeriUrls.map((url: string, idx: number) => (
+            <img 
+              key={idx} 
+              src={url} 
+              alt={`Galeri ${idx + 1}`} 
+              onClick={() => setLightboxIndex(idx)}
+              className="w-40 h-40 rounded-lg object-cover flex-shrink-0 snap-center shadow-sm border border-gray-100 cursor-pointer hover:opacity-90 transition-opacity" 
+            />
+          ))}
+        </div>
+      </section>
 
       {/* Lightbox */}
       {lightboxIndex !== null && (
         <div 
-          className="fixed inset-0 z-[60] bg-black/90 flex flex-col backdrop-blur-sm"
+          className="fixed inset-0 z-[100] bg-black/90 flex flex-col backdrop-blur-sm"
+          style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0 }}
           onClick={() => setLightboxIndex(null)}
         >
           {/* Header */}
@@ -85,6 +88,6 @@ export default function ProfilGalleryClient({ galeriUrls }: { galeriUrls: string
           )}
         </div>
       )}
-    </section>
+    </>
   );
 }
